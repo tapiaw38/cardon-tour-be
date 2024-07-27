@@ -3,6 +3,7 @@ package profile
 import (
 	"context"
 
+	"github.com/google/uuid"
 	domain "github.com/tapiaw38/cardon-tour-be/internal/domain/profile"
 	"github.com/tapiaw38/cardon-tour-be/internal/platform/appcontext"
 )
@@ -29,6 +30,13 @@ func NewCreateUseCase(contextFactory appcontext.Factory) CreateUsecase {
 
 func (u *createUsecase) Execute(ctx context.Context, profile domain.Profile) (CreateOutput, error) {
 	app := u.contextFactory()
+
+	profileID, err := uuid.NewUUID()
+	if err != nil {
+		return CreateOutput{}, err
+	}
+
+	profile.ID = profileID.String()
 
 	id, err := app.Repositories.Profile.Create(ctx, profile)
 	if err != nil {
