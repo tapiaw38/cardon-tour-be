@@ -5,20 +5,24 @@ import (
 	"errors"
 	"log"
 
+	"github.com/joho/godotenv"
+	"github.com/tapiaw38/cardon-tour-be/internal/platform/appcontext"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
+	"github.com/tapiaw38/cardon-tour-be/internal/adapters/web"
 	"github.com/tapiaw38/cardon-tour-be/internal/platform/config"
 	"github.com/tapiaw38/cardon-tour-be/internal/platform/database"
+	"github.com/tapiaw38/cardon-tour-be/internal/usecases"
 )
 
 func main() {
-	config, err := initConfig()
+	cfg, err := initConfig()
 	if err != nil {
 		panic(err)
 	}
 
-	if err := run(config); err != nil {
+	if err := run(cfg); err != nil {
 		panic(err)
 	}
 }
@@ -47,7 +51,13 @@ func run(config *config.Config) error {
 	if err != nil {
 		return err
 	}
-	defer db.Close()
+
+	defer func(db *sql.DB) {
+		err := db.Close()
+		if err != nil {
+			panic(err)
+		}
+	}(db)
 
 	err = sqlClient.Makemigration()
 	if err != nil {
@@ -77,8 +87,8 @@ func run(config *config.Config) error {
 }
 
 func bootstrap(app *gin.Engine, db *sql.DB) {
-	//repositories := repositories.CreateRepositories(db)
-	//usecases := usecases.CreateUsecases(repositories)
+	contextFactory := appcontext.NewFactory(db)
+	uc := usecases.CreateUsecases(contextFactory)
 
-	//web.RegisterApplicationRoutes(app, usecases)
+	web.RegisterApplicationRoutes(app, uc)
 }

@@ -46,6 +46,7 @@ func (c *SQLConfig) GetSQLClientInstance() (*sql.DB, error) {
 			return nil, err
 		}
 	}
+
 	return sqlClient, nil
 }
 

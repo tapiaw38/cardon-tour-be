@@ -1,0 +1,12 @@
+DROP TABLE proffile_types;
+DROP TABLE profiles;
+DROP TABLE countries;
+DROP TABLE provinces;
+DROP TABLE cities;
+DROP TABLE profile_locations;
+DROP TABLE business_types;
+DROP TABLE businesses;
+DROP TABLE business_images;
+DROP TABLE event_types;
+DROP TABLE event_schedules;
+DROP TABLE events;
