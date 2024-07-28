@@ -14,12 +14,13 @@ func (r *repository) Get(ctx context.Context, id string) (*domain.Profile, error
 
 func (r *repository) ExecuteGetQuery(ctx context.Context, id string) (*domain.Profile, error) {
 	query := `SELECT
-				p.id, p.user_id, pt.name
-			FROM
-				profile p
-			LEFT JOIN profile_types pt ON pt.id = p.profile_type_id
-			WHERE
-				id = $1`
+			p.id, p.user_id, pt.name
+		FROM
+			profiles p
+		LEFT JOIN
+			profile_types pt ON pt.id = p.profile_type
+		WHERE
+			p.id = $1`
 
 	row := r.db.QueryRowContext(ctx, query, id)
 
