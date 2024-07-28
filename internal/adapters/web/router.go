@@ -3,6 +3,7 @@ package web
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/profile"
+	profiletype "github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/profile/profile_type"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases"
 )
 
@@ -17,4 +18,7 @@ func RegisterApplicationRoutes(app *gin.Engine, usecases *usecases.UseCases) {
 
 	routeGroup.POST("/profiles", profile.NewCreateHandler(usecases.Profile.CreateUseCase))
 	routeGroup.GET("/profiles/:id", profile.NewGetHandler(usecases.Profile.GetUseCase))
+
+	routeGroup.POST("/profiles/types", profiletype.NewCreateHandler(usecases.Profile.ProfileType.CreateUseCase))
+	routeGroup.DELETE("/profiles/types/:id", profiletype.NewDeleteHandler(usecases.Profile.ProfileType.DeleteUseCase))
 }

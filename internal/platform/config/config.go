@@ -12,7 +12,7 @@ type Config struct {
 func NewConfig() Config {
 	return Config{
 		GinMode:     getEnv("GIN_MODE", "debug"),
-		Port:        getEnv("PORT", "8080"),
+		Port:        getEnv("PORT", "8082"),
 		Host:        getEnv("HOST", "localhost"),
 		DatabaseURL: getEnv("DATABASE_URL", ""),
 	}
