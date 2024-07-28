@@ -8,7 +8,8 @@ CREATE TABLE profiles (
     user_id VARCHAR(36) NOT NULL,
     profile_type VARCHAR(36) NOT NULL,
     active BOOLEAN NOT NULL DEFAULT true,
-    FOREIGN KEY (profile_type) REFERENCES profile_types(id)
+    CONSTRAINT fk_profile_type FOREIGN KEY (profile_type) REFERENCES profile_types(id),
+    CONSTRAINT unique_profile UNIQUE (user_id, profile_type)
 );
 
 CREATE TABLE countries (
@@ -26,7 +27,8 @@ CREATE TABLE provinces (
     latitude DECIMAL(10, 8),
     longitude DECIMAL(11, 8),
     description TEXT,
-    FOREIGN KEY (country_id) REFERENCES countries(id)
+    CONSTRAINT fk_country FOREIGN KEY (country_id) REFERENCES countries(id),
+    CONSTRAINT unique_province UNIQUE (country_id, code)
 );
 
 CREATE TABLE cities (
@@ -37,7 +39,8 @@ CREATE TABLE cities (
     latitude DECIMAL(10, 8),
     longitude DECIMAL(11, 8),
     description TEXT,
-    FOREIGN KEY (province_id) REFERENCES provinces(id)
+    CONSTRAINT fk_province FOREIGN KEY (province_id) REFERENCES provinces(id),
+    CONSTRAINT unique_city UNIQUE (province_id, code)
 );
 
 CREATE TABLE profile_locations (
@@ -45,10 +48,11 @@ CREATE TABLE profile_locations (
     country_id VARCHAR(36) NOT NULL,
     province_id VARCHAR(36) NOT NULL,
     city_id VARCHAR(36) NOT NULL,
-    FOREIGN KEY (profile_id) REFERENCES profiles(id),
-    FOREIGN KEY (country_id) REFERENCES countries(id),
-    FOREIGN KEY (province_id) REFERENCES provinces(id),
-    FOREIGN KEY (city_id) REFERENCES cities(id)
+    CONSTRAINT fk_profile FOREIGN KEY (profile_id) REFERENCES profiles(id),
+    CONSTRAINT fk_country_location FOREIGN KEY (country_id) REFERENCES countries(id),
+    CONSTRAINT fk_province_location FOREIGN KEY (province_id) REFERENCES provinces(id),
+    CONSTRAINT fk_city_location FOREIGN KEY (city_id) REFERENCES cities(id),
+    CONSTRAINT unique_profile_location UNIQUE (profile_id, country_id, province_id, city_id)
 );
 
 CREATE TABLE business_types (
@@ -69,16 +73,17 @@ CREATE TABLE businesses (
     longitude DECIMAL(11, 8),
     city_id VARCHAR(36) NOT NULL,
     created_at TIMESTAMP NOT NULL,
-    FOREIGN KEY (profile_id) REFERENCES profiles(id),
-    FOREIGN KEY (business_type_id) REFERENCES business_types(id),
-    FOREIGN KEY (city_id) REFERENCES cities(id)
+    CONSTRAINT fk_profile_business FOREIGN KEY (profile_id) REFERENCES profiles(id),
+    CONSTRAINT fk_business_type FOREIGN KEY (business_type_id) REFERENCES business_types(id),
+    CONSTRAINT fk_city_business FOREIGN KEY (city_id) REFERENCES cities(id),
+    CONSTRAINT unique_business UNIQUE (profile_id, business_type_id, name)
 );
 
 CREATE TABLE business_images (
     id VARCHAR(36) PRIMARY KEY,
     business_id VARCHAR(36) NOT NULL,
     url VARCHAR(255) NOT NULL,
-    FOREIGN KEY (business_id) REFERENCES businesses(id),
+    CONSTRAINT fk_business_image FOREIGN KEY (business_id) REFERENCES businesses(id),
     CONSTRAINT unique_business_image UNIQUE (business_id, url)
 );
 
@@ -95,9 +100,10 @@ CREATE TABLE events (
     description TEXT,
     created_at TIMESTAMP NOT NULL,
     created_by VARCHAR(36) NOT NULL,
-    FOREIGN KEY (event_type_id) REFERENCES event_types(id),
-    FOREIGN KEY (created_by) REFERENCES profiles(id),
-    FOREIGN KEY (city_id) REFERENCES cities(id)
+    CONSTRAINT fk_event_type FOREIGN KEY (event_type_id) REFERENCES event_types(id),
+    CONSTRAINT fk_event_creator FOREIGN KEY (created_by) REFERENCES profiles(id),
+    CONSTRAINT fk_event_city FOREIGN KEY (city_id) REFERENCES cities(id),
+    CONSTRAINT unique_event UNIQUE (event_type_id, city_id, name)
 );
 
 CREATE TABLE event_schedules (
@@ -107,6 +113,6 @@ CREATE TABLE event_schedules (
     start_at DATE NOT NULL,
     end_at DATE NOT NULL,
     created_at TIMESTAMP NOT NULL,
-    FOREIGN KEY (event_id) REFERENCES events(id),
+    CONSTRAINT fk_event_schedule FOREIGN KEY (event_id) REFERENCES events(id),
     CONSTRAINT unique_event_schedule UNIQUE (event_id, start_at, end_at)
-)
+);
