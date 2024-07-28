@@ -24,7 +24,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - ${PORT}:8080
+      - ${PORT}:8082
     depends_on:
       - cardon-postgres-db
     stdin_open: true

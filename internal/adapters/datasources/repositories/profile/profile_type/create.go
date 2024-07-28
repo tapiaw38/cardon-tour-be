@@ -14,7 +14,7 @@ func (r *repository) executeCreateQuery(ctx context.Context, profileType domain.
 	query := `INSERT INTO profile_types(
 					id,
 					name
-				) VALUES ($1)`
+				) VALUES ($1, $2)`
 
 	args := []any{
 		profileType.ID,

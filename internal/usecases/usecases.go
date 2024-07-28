@@ -18,6 +18,7 @@ type Profile struct {
 
 type ProfileType struct {
 	CreateUseCase profiletype.CreateUsecase
+	DeleteUseCase profiletype.DeleteUsecase
 }
 
 func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
@@ -27,6 +28,7 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 			CreateUseCase: profile.NewCreateUseCase(contextFactory),
 			ProfileType: ProfileType{
 				CreateUseCase: profiletype.NewCreateUseCase(contextFactory),
+				DeleteUseCase: profiletype.NewDeleteUseCase(contextFactory),
 			},
 		},
 	}
