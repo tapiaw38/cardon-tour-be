@@ -12,7 +12,7 @@ func (r *repository) Update(ctx context.Context, id string, profile domain.Profi
 }
 
 func (r *repository) executeUpdateQuery(ctx context.Context, id string, profile domain.Profile) error {
-	query := `UPDATE profile
+	query := `UPDATE profiles
 				SET
 					profile_type_id = COALESCE($1, profile_type_id)
 				WHERE

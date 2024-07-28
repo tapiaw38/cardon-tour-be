@@ -16,9 +16,9 @@ func (r *repository) Create(ctx context.Context, profile domain.Profile) (string
 }
 
 func (r *repository) executeCreateQuery(ctx context.Context, profile domain.Profile) (string, error) {
-	query := `INSERT INTO profile(
-					id, user_id, profile_type_id, picture_url
-				) VALUES ($1, $2, $3, $4) RETURNING id`
+	query := `INSERT INTO profiles(
+					id, user_id, profile_type
+				) VALUES ($1, $2, $3) RETURNING id`
 
 	args := []any{
 		profile.ID,
