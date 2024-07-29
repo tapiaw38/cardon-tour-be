@@ -1,6 +1,7 @@
 CREATE TABLE profile_types (
     id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(255) NOT NULL
+    CONSTRAINT unique_profile_type UNIQUE (name)
 );
 
 CREATE TABLE profiles (
