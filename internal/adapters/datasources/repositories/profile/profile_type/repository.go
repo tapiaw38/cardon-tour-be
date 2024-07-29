@@ -11,6 +11,7 @@ type (
 	Repository interface {
 		Create(context.Context, domain.ProfileType) error
 		Delete(context.Context, string) error
+		List(context.Context) ([]domain.ProfileType, error)
 	}
 
 	repository struct {

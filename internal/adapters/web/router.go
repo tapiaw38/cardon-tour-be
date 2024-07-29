@@ -18,7 +18,9 @@ func RegisterApplicationRoutes(app *gin.Engine, usecases *usecases.UseCases) {
 
 	routeGroup.POST("/profiles", profile.NewCreateHandler(usecases.Profile.CreateUseCase))
 	routeGroup.GET("/profiles/:id", profile.NewGetHandler(usecases.Profile.GetUseCase))
+	routeGroup.PATCH("/profiles/:id", profile.NewUpdateHandler(usecases.Profile.UpdateUseCase))
 
 	routeGroup.POST("/profiles/types", profiletype.NewCreateHandler(usecases.Profile.ProfileType.CreateUseCase))
 	routeGroup.DELETE("/profiles/types/:id", profiletype.NewDeleteHandler(usecases.Profile.ProfileType.DeleteUseCase))
+	routeGroup.GET("/profiles/types", profiletype.NewListHandler(usecases.Profile.ProfileType.ListUseCase))
 }
