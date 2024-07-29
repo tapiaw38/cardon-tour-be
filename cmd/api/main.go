@@ -81,14 +81,14 @@ func run(config *config.Config) error {
 
 	app.Use(cors.New(cfg))
 
-	bootstrap(app, db)
+	bootstrap(app, db, config)
 
 	return app.Run(":" + config.Port)
 }
 
-func bootstrap(app *gin.Engine, db *sql.DB) {
+func bootstrap(app *gin.Engine, db *sql.DB, cfg *config.Config) {
 	contextFactory := appcontext.NewFactory(db)
 	uc := usecases.CreateUsecases(contextFactory)
 
-	web.RegisterApplicationRoutes(app, uc)
+	web.RegisterApplicationRoutes(app, uc, cfg)
 }

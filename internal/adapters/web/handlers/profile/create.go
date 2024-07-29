@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	domain "github.com/tapiaw38/cardon-tour-be/internal/domain/claim"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/profile"
 )
 
@@ -14,6 +15,9 @@ func NewCreateHandler(usecase profile.CreateUsecase) gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
+
+		claimUserID := c.MustGet("claims").(domain.Claims).UserId
+		profileInput.UserID = claimUserID
 
 		profile := toUserInput(profileInput)
 

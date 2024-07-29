@@ -4,10 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/profile"
 	profiletype "github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/profile/profile_type"
+	"github.com/tapiaw38/cardon-tour-be/internal/adapters/web/middlewares"
+	"github.com/tapiaw38/cardon-tour-be/internal/platform/config"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases"
 )
 
-func RegisterApplicationRoutes(app *gin.Engine, usecases *usecases.UseCases) {
+func RegisterApplicationRoutes(app *gin.Engine, usecases *usecases.UseCases, cfg *config.Config) {
 	routeGroup := app.Group("/api")
 
 	routeGroup.GET("/ping", func(c *gin.Context) {
@@ -15,6 +17,8 @@ func RegisterApplicationRoutes(app *gin.Engine, usecases *usecases.UseCases) {
 			"message": "pong",
 		})
 	})
+
+	routeGroup.Use(middlewares.CheckAuthMiddleware(*cfg))
 
 	routeGroup.POST("/profiles", profile.NewCreateHandler(usecases.Profile.CreateUseCase))
 	routeGroup.GET("/profiles/:id", profile.NewGetHandler(usecases.Profile.GetUseCase))
