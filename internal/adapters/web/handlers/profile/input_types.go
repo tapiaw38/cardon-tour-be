@@ -7,7 +7,7 @@ type inputProfile struct {
 	ProfileTypeID string `json:"profile_type_id"`
 }
 
-func toUserInput(profileInput inputProfile) domain.Profile {
+func toProfileInput(profileInput inputProfile) domain.Profile {
 	return domain.Profile{
 		UserID:        profileInput.UserID,
 		ProfileTypeID: profileInput.ProfileTypeID,

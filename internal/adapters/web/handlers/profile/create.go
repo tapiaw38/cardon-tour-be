@@ -19,7 +19,7 @@ func NewCreateHandler(usecase profile.CreateUsecase) gin.HandlerFunc {
 		claimUserID := c.MustGet("claims").(domain.Claims).UserId
 		profileInput.UserID = claimUserID
 
-		profile := toUserInput(profileInput)
+		profile := toProfileInput(profileInput)
 
 		profileCreated, err := usecase.Execute(c.Request.Context(), profile)
 		if err != nil {

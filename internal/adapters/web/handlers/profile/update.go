@@ -21,7 +21,7 @@ func NewUpdateHandler(usecase profile.UpdateUsecase) gin.HandlerFunc {
 			return
 		}
 
-		profile := toUserInput(profileInput)
+		profile := toProfileInput(profileInput)
 
 		profileUpdated, err := usecase.Execute(c.Request.Context(), id, profile)
 		if err != nil {
