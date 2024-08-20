@@ -1,6 +1,6 @@
 CREATE TABLE profile_types (
     id VARCHAR(36) PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
     CONSTRAINT unique_profile_type UNIQUE (name)
 );
 
@@ -48,7 +48,7 @@ CREATE TABLE sites (
     id VARCHAR(36) PRIMARY KEY,
     slug VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
-    description TEXT
+    description TEXT,
     image_url VARCHAR(255),
     CONSTRAINT unique_site UNIQUE (slug)
 );
@@ -67,7 +67,7 @@ CREATE TABLE business_types (
     slug VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
     color VARCHAR(255) NOT NULL,
-    description TEXT
+    description TEXT,
     image_url VARCHAR(255),
     CONSTRAINT unique_business_type UNIQUE (slug)
 );

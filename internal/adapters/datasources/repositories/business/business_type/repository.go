@@ -3,6 +3,7 @@ package business_type
 import (
 	"context"
 	"database/sql"
+
 	domain "github.com/tapiaw38/cardon-tour-be/internal/domain/business"
 )
 
@@ -12,6 +13,7 @@ type (
 		Get(ctx context.Context, id string) (domain.BusinessType, error)
 		Update(ctx context.Context, id string, businessType domain.BusinessType) (string, error)
 		Delete(ctx context.Context, id string) (string, error)
+		List(ctx context.Context) ([]domain.BusinessType, error)
 	}
 
 	repository struct {

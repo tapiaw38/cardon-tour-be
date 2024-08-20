@@ -16,20 +16,28 @@ func (r *repository) List(ctx context.Context) ([]domain.BusinessType, error) {
 
 	var businessTypes []domain.BusinessType
 	for rows.Next() {
-		var businessType domain.BusinessType
+		var id, slug, name, color, description string
+		var imageURL sql.NullString
 		err = rows.Scan(
-			&businessType.ID,
-			&businessType.Slug,
-			&businessType.Name,
-			&businessType.Color,
-			&businessType.Description,
-			&businessType.ImageURL,
+			&id,
+			&slug,
+			&name,
+			&color,
+			&description,
+			&imageURL,
 		)
 		if err != nil {
 			return nil, err
 		}
 
-		businessTypes = append(businessTypes, businessType)
+		businessTypes = append(businessTypes, domain.BusinessType{
+			ID:          id,
+			Slug:        slug,
+			Name:        name,
+			Color:       color,
+			Description: description,
+			ImageURL:    imageURL.String,
+		})
 	}
 
 	return businessTypes, nil
