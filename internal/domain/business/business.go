@@ -9,8 +9,12 @@ import (
 
 type (
 	BusinessType struct {
-		ID   string
-		Name string
+		ID          string
+		Slug        string
+		Name        string
+		Color       string
+		Description string
+		ImageURL    string
 	}
 
 	Business struct {

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	domain "github.com/tapiaw38/cardon-tour-be/internal/domain/claim"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/profile"
 )
 
@@ -15,7 +16,10 @@ func NewCreateHandler(usecase profile.CreateUsecase) gin.HandlerFunc {
 			return
 		}
 
-		profile := toUserInput(profileInput)
+		claimUserID := c.MustGet("claims").(domain.Claims).UserId
+		profileInput.UserID = claimUserID
+
+		profile := toProfileInput(profileInput)
 
 		profileCreated, err := usecase.Execute(c.Request.Context(), profile)
 		if err != nil {

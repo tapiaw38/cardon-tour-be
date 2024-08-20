@@ -32,6 +32,9 @@ func (r *repository) ExecuteGetQuery(ctx context.Context, id string) (*sql.Row, 
 			p.id = $1`
 
 	row := r.db.QueryRowContext(ctx, query, id)
+	if row.Err() != nil {
+		return nil, row.Err()
+	}
 
 	return row, nil
 }

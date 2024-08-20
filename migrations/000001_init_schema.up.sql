@@ -1,6 +1,6 @@
 CREATE TABLE profile_types (
     id VARCHAR(36) PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
     CONSTRAINT unique_profile_type UNIQUE (name)
 );
 
@@ -44,21 +44,32 @@ CREATE TABLE cities (
     CONSTRAINT unique_city UNIQUE (province_id, code)
 );
 
-CREATE TABLE profile_locations (
+CREATE TABLE sites (
+    id VARCHAR(36) PRIMARY KEY,
+    slug VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    image_url VARCHAR(255),
+    CONSTRAINT unique_site UNIQUE (slug)
+);
+
+CREATE TABLE profile_sites (
+    id VARCHAR(36) PRIMARY KEY,
     profile_id VARCHAR(36) NOT NULL,
-    country_id VARCHAR(36) NOT NULL,
-    province_id VARCHAR(36) NOT NULL,
-    city_id VARCHAR(36) NOT NULL,
-    CONSTRAINT fk_profile FOREIGN KEY (profile_id) REFERENCES profiles(id),
-    CONSTRAINT fk_country_location FOREIGN KEY (country_id) REFERENCES countries(id),
-    CONSTRAINT fk_province_location FOREIGN KEY (province_id) REFERENCES provinces(id),
-    CONSTRAINT fk_city_location FOREIGN KEY (city_id) REFERENCES cities(id),
-    CONSTRAINT unique_profile_location UNIQUE (profile_id, country_id, province_id, city_id)
+    site_id VARCHAR(36) NOT NULL,
+    CONSTRAINT fk_profile_site FOREIGN KEY (profile_id) REFERENCES profiles(id),
+    CONSTRAINT fk_site_profile FOREIGN KEY (site_id) REFERENCES sites(id),
+    CONSTRAINT unique_profile_site UNIQUE (profile_id, site_id)
 );
 
 CREATE TABLE business_types (
     id VARCHAR(36) PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    slug VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    color VARCHAR(255) NOT NULL,
+    description TEXT,
+    image_url VARCHAR(255),
+    CONSTRAINT unique_business_type UNIQUE (slug)
 );
 
 CREATE TABLE businesses (
