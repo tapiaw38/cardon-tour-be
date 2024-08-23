@@ -30,7 +30,8 @@ type Business struct {
 }
 
 type BusinessType struct {
-	ListUseCase businesstype.ListUsecase
+	ListUseCase      businesstype.ListUsecase
+	GetBySlugUseCase businesstype.GetBySlugUsecase
 }
 
 func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
@@ -47,7 +48,8 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 		},
 		Business: Business{
 			Types: BusinessType{
-				ListUseCase: businesstype.NewListUseCase(contextFactory),
+				ListUseCase:      businesstype.NewListUseCase(contextFactory),
+				GetBySlugUseCase: businesstype.NewGetBySlugUsecase(contextFactory),
 			},
 		},
 	}

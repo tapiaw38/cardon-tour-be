@@ -11,6 +11,7 @@ type (
 	Repository interface {
 		Create(ctx context.Context, businessType domain.BusinessType) (string, error)
 		Get(ctx context.Context, id string) (domain.BusinessType, error)
+		GetBySlug(ctx context.Context, slug string) (domain.BusinessType, error)
 		Update(ctx context.Context, id string, businessType domain.BusinessType) (string, error)
 		Delete(ctx context.Context, id string) (string, error)
 		List(ctx context.Context) ([]domain.BusinessType, error)
