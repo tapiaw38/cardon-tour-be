@@ -5,6 +5,7 @@ import (
 	businesstype "github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/business/business_type"
 	"github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/profile"
 	profiletype "github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/profile/profile_type"
+	"github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/site"
 	"github.com/tapiaw38/cardon-tour-be/internal/platform/config"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases"
 )
@@ -27,6 +28,8 @@ func RegisterApplicationRoutes(app *gin.Engine, usecases *usecases.UseCases, cfg
 	routeGroup.POST("/profiles/types", profiletype.NewCreateHandler(usecases.Profile.Types.CreateUseCase))
 	routeGroup.DELETE("/profiles/types/:id", profiletype.NewDeleteHandler(usecases.Profile.Types.DeleteUseCase))
 	routeGroup.GET("/profiles/types", profiletype.NewListHandler(usecases.Profile.Types.ListUseCase))
+
+	routeGroup.GET("/sites", site.NewListHandler(usecases.Site.ListUseCase))
 
 	routeGroup.GET("/businesses/types", businesstype.NewListHandler(usecases.Business.Types.ListUseCase))
 	routeGroup.GET("/businesses/types/:slug", businesstype.NewGetBySlugHandler(usecases.Business.Types.GetBySlugUseCase))
