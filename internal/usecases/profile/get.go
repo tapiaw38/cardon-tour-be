@@ -3,6 +3,7 @@ package profile
 import (
 	"context"
 
+	domain "github.com/tapiaw38/cardon-tour-be/internal/domain/site"
 	"github.com/tapiaw38/cardon-tour-be/internal/platform/appcontext"
 )
 
@@ -29,12 +30,23 @@ func NewGetUseCase(contextFactory appcontext.Factory) GetUsecase {
 func (u *getUsecase) Execute(ctx context.Context, id string) (GetOutput, error) {
 	app := u.contextFactory()
 
-	user, err := app.Repositories.Profile.Get(ctx, id)
+	profile, err := app.Repositories.Profile.Get(ctx, id)
 	if err != nil {
 		return GetOutput{}, err
 	}
 
+	var profileSites []domain.Site
+	for _, siteID := range profile.ProfileSitesID {
+		site, err := app.Repositories.Site.GetByID(ctx, siteID)
+		if err != nil {
+			return GetOutput{}, err
+		}
+		profileSites = append(profileSites, *site)
+	}
+
+	profile.ProfileSites = profileSites
+
 	return GetOutput{
-		Data: toProfileOutputData(user),
+		Data: toProfileOutputData(profile),
 	}, nil
 }

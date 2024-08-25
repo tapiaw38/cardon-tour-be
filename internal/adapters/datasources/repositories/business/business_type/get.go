@@ -13,17 +13,28 @@ func (r *repository) Get(ctx context.Context, id string) (domain.BusinessType, e
 		return domain.BusinessType{}, err
 	}
 
-	var businessType domain.BusinessType
+	var businessTypeID, slug, name, color, description string
+	var imageURL sql.NullString
 	err = row.Scan(
-		&businessType.ID,
-		&businessType.Slug,
-		&businessType.Name,
-		&businessType.Color,
-		&businessType.Description,
-		&businessType.ImageURL,
+		&businessTypeID,
+		&slug,
+		&name,
+		&color,
+		&description,
+		&imageURL,
 	)
+	if err != nil {
+		return domain.BusinessType{}, err
+	}
 
-	return businessType, err
+	return domain.BusinessType{
+		ID:          businessTypeID,
+		Slug:        slug,
+		Name:        name,
+		Color:       color,
+		Description: description,
+		ImageURL:    imageURL.String,
+	}, nil
 }
 
 func (r *repository) executeGetQuery(ctx context.Context, id string) (*sql.Row, error) {

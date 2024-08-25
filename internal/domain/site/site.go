@@ -7,5 +7,6 @@ type (
 		Name        string
 		Description string
 		ImageURL    string
+		CityID      string
 	}
 )
