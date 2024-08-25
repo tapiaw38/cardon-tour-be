@@ -10,6 +10,8 @@ import (
 type (
 	Repository interface {
 		List(ctx context.Context) ([]domain.Site, error)
+		GetByID(ctx context.Context, id string) (*domain.Site, error)
+		GetBySlug(ctx context.Context, slug string) (*domain.Site, error)
 	}
 
 	repository struct {

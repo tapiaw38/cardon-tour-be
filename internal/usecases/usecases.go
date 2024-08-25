@@ -28,7 +28,8 @@ type ProfileType struct {
 }
 
 type Site struct {
-	ListUseCase site.ListUsecase
+	ListUseCase      site.ListUsecase
+	GetBySlugUseCase site.GetBySlugUsecase
 }
 
 type Business struct {
@@ -53,7 +54,8 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 			},
 		},
 		Site: Site{
-			ListUseCase: site.NewListUseCase(contextFactory),
+			ListUseCase:      site.NewListUseCase(contextFactory),
+			GetBySlugUseCase: site.NewGetBySlugUsecase(contextFactory),
 		},
 		Business: Business{
 			Types: BusinessType{

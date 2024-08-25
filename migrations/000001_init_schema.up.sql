@@ -50,16 +50,16 @@ CREATE TABLE sites (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     image_url VARCHAR(255),
-    CONSTRAINT unique_site UNIQUE (slug)
+    city_id VARCHAR(36) NOT NULL,
+    CONSTRAINT fk_site_city FOREIGN KEY (city_id) REFERENCES cities(id),
+    CONSTRAINT unique_site UNIQUE (slug, city_id)
 );
 
 CREATE TABLE profile_sites (
-    id VARCHAR(36) PRIMARY KEY,
     profile_id VARCHAR(36) NOT NULL,
     site_id VARCHAR(36) NOT NULL,
-    CONSTRAINT fk_profile_site FOREIGN KEY (profile_id) REFERENCES profiles(id),
-    CONSTRAINT fk_site_profile FOREIGN KEY (site_id) REFERENCES sites(id),
-    CONSTRAINT unique_profile_site UNIQUE (profile_id, site_id)
+    CONSTRAINT fk_profile_site FOREIGN KEY (profile_id) REFERENCES profiles(id) ON DELETE CASCADE,
+    CONSTRAINT fk_site_profile FOREIGN KEY (site_id) REFERENCES sites(id) ON DELETE CASCADE
 );
 
 CREATE TABLE business_types (
@@ -70,6 +70,13 @@ CREATE TABLE business_types (
     description TEXT,
     image_url VARCHAR(255),
     CONSTRAINT unique_business_type UNIQUE (slug)
+);
+
+CREATE TABLE site_business_types (
+    site_id VARCHAR(36) NOT NULL,
+    business_type_id VARCHAR(36) NOT NULL,
+    CONSTRAINT fk_site_business_type FOREIGN KEY (site_id) REFERENCES sites(id) ON DELETE CASCADE,
+    CONSTRAINT fk_business_type_site FOREIGN KEY (business_type_id) REFERENCES business_types(id) ON DELETE CASCADE
 );
 
 CREATE TABLE businesses (

@@ -6,6 +6,7 @@ func unmarshalProfile(
 	id string,
 	userID string,
 	profileName string,
+	profileSitesID []string,
 ) *domain.Profile {
 	return &domain.Profile{
 		ID:     id,
@@ -13,5 +14,6 @@ func unmarshalProfile(
 		ProfileType: &domain.ProfileType{
 			Name: profileName,
 		},
+		ProfileSitesID: profileSitesID,
 	}
 }
