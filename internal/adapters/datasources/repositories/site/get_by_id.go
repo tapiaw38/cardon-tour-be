@@ -8,45 +8,67 @@ import (
 )
 
 func (r *repository) GetByID(ctx context.Context, id string) (*domain.Site, error) {
-	row, err := r.executeGetByIDQuery(ctx, id)
+	rows, err := r.executeGetByIDQuery(ctx, id)
 	if err != nil {
 		return &domain.Site{}, err
 	}
 
-	var siteID, siteSlug, name, description, CityID string
+	var siteID, siteSlug, name, description, cityID string
 	var imageURL sql.NullString
-	err = row.Scan(
-		&siteID,
-		&siteSlug,
-		&name,
-		&description,
-		&imageURL,
-		&CityID,
-	)
-	if err != nil {
+	var businessTypeSlugs []string
+
+	for rows.Next() {
+		var businessTypeSlug sql.NullString
+		if err := rows.Scan(
+			&siteID,
+			&siteSlug,
+			&name,
+			&description,
+			&imageURL,
+			&cityID,
+			&businessTypeSlug,
+		); err != nil {
+			return &domain.Site{}, err
+		}
+
+		if businessTypeSlug.Valid {
+			businessTypeSlugs = append(businessTypeSlugs, businessTypeSlug.String)
+		}
+	}
+
+	if err = rows.Err(); err != nil {
 		return &domain.Site{}, err
 	}
 
 	return &domain.Site{
-		ID:          siteID,
-		Slug:        siteSlug,
-		Name:        name,
-		Description: description,
-		ImageURL:    imageURL.String,
-		CityID:      CityID,
+		ID:                id,
+		Slug:              siteSlug,
+		Name:              name,
+		Description:       description,
+		ImageURL:          imageURL.String,
+		CityID:            cityID,
+		BusinessTypeSlugs: businessTypeSlugs,
 	}, nil
 }
 
-func (r *repository) executeGetByIDQuery(ctx context.Context, id string) (*sql.Row, error) {
+func (r *repository) executeGetByIDQuery(ctx context.Context, id string) (*sql.Rows, error) {
 	query := `SELECT
-			id, slug, name, description, image_url, city_id
-		FROM sites
+			s.id, 
+			s.slug, 
+			s.name, 
+			s.description, 
+			s.image_url, 
+			s.city_id,
+			bt.slug AS business_type_slug
+		FROM sites s
+		LEFT JOIN site_business_types sbt ON sbt.site_id = s.id
+		LEFT JOIN business_types bt ON bt.id = sbt.business_type_id
 		WHERE id = $1`
 
-	row := r.db.QueryRowContext(ctx, query, id)
-	if row.Err() != nil {
-		return nil, row.Err()
+	rows, err := r.db.QueryContext(ctx, query, id)
+	if err != nil {
+		return nil, err
 	}
 
-	return row, nil
+	return rows, nil
 }

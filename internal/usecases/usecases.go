@@ -15,10 +15,10 @@ type UseCases struct {
 }
 
 type Profile struct {
-	GetUseCase    profile.GetUsecase
-	CreateUseCase profile.CreateUsecase
-	UpdateUseCase profile.UpdateUsecase
-	Types         ProfileType
+	GetByUserIDUseCase profile.GetByUserIDUsecase
+	CreateUseCase      profile.CreateUsecase
+	UpdateUseCase      profile.UpdateUsecase
+	Types              ProfileType
 }
 
 type ProfileType struct {
@@ -44,9 +44,9 @@ type BusinessType struct {
 func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 	return &UseCases{
 		Profile: Profile{
-			GetUseCase:    profile.NewGetUseCase(contextFactory),
-			CreateUseCase: profile.NewCreateUseCase(contextFactory),
-			UpdateUseCase: profile.NewUpdateUseCase(contextFactory),
+			GetByUserIDUseCase: profile.NewGetByUserIDUseCase(contextFactory),
+			CreateUseCase:      profile.NewCreateUseCase(contextFactory),
+			UpdateUseCase:      profile.NewUpdateUseCase(contextFactory),
 			Types: ProfileType{
 				CreateUseCase: profiletype.NewCreateUseCase(contextFactory),
 				DeleteUseCase: profiletype.NewDeleteUseCase(contextFactory),

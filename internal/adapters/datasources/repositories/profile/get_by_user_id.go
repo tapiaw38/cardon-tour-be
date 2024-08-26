@@ -7,21 +7,21 @@ import (
 	domain "github.com/tapiaw38/cardon-tour-be/internal/domain/profile"
 )
 
-func (r *repository) Get(ctx context.Context, id string) (*domain.Profile, error) {
-	rows, err := r.executeGetQuery(ctx, id)
+func (r *repository) GetByUserID(ctx context.Context, userID string) (*domain.Profile, error) {
+	rows, err := r.executeGetByUserIDQuery(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var profileID, userID, profileName string
+	var profileID, profileUserID, profileName string
 	var profileSitesID []string
 
 	for rows.Next() {
 		var siteID sql.NullString
 		if err := rows.Scan(
 			&profileID,
-			&userID,
+			&profileUserID,
 			&profileName,
 			&siteID,
 		); err != nil {
@@ -37,12 +37,12 @@ func (r *repository) Get(ctx context.Context, id string) (*domain.Profile, error
 		return nil, err
 	}
 
-	user := unmarshalProfile(profileID, userID, profileName, profileSitesID)
+	user := unmarshalProfile(profileID, profileUserID, profileName, profileSitesID)
 
 	return user, nil
 }
 
-func (r *repository) executeGetQuery(ctx context.Context, id string) (*sql.Rows, error) {
+func (r *repository) executeGetByUserIDQuery(ctx context.Context, userID string) (*sql.Rows, error) {
 	query := `SELECT
 			p.id AS profile_id,
 			p.user_id,
@@ -55,9 +55,9 @@ func (r *repository) executeGetQuery(ctx context.Context, id string) (*sql.Rows,
 		LEFT JOIN
 			profile_sites ps ON ps.profile_id = p.id
 		WHERE
-			p.id = $1`
+			p.user_id = $1`
 
-	rows, err := r.db.QueryContext(ctx, query, id)
+	rows, err := r.db.QueryContext(ctx, query, userID)
 	if err != nil {
 		return nil, err
 	}

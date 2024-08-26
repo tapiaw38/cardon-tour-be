@@ -36,7 +36,6 @@ services:
 # Define volumes
 volumes:
   database_postgres:
-
 # Define networks
 networks:
   network-api:
