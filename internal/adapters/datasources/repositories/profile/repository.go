@@ -11,6 +11,7 @@ type (
 	Repository interface {
 		Create(context.Context, domain.Profile) (string, error)
 		Get(context.Context, string) (*domain.Profile, error)
+		GetByUserID(context.Context, string) (*domain.Profile, error)
 		Update(context.Context, string, domain.Profile) error
 	}
 

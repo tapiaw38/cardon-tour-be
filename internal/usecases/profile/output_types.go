@@ -10,11 +10,13 @@ type ProfileTypeOutputData struct {
 }
 
 type ProfileSitesOutputData struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	ImageURL    string `json:"image_url"`
-	CityID      string `json:"city_id"`
+	ID                string   `json:"id"`
+	Name              string   `json:"name"`
+	Slug              string   `json:"slug"`
+	Description       string   `json:"description"`
+	ImageURL          string   `json:"image_url"`
+	CityID            string   `json:"city_id"`
+	BusinessTypeSlugs []string `json:"business_type_slugs,omitempty"`
 }
 
 type ProfileOutputData struct {
@@ -46,10 +48,12 @@ func toProfileTypeOutputData(profileType *profile_domain.ProfileType) ProfileTyp
 
 func toProfileSitesOutputData(profileSite *site_domain.Site) ProfileSitesOutputData {
 	return ProfileSitesOutputData{
-		ID:          profileSite.ID,
-		Name:        profileSite.Name,
-		Description: profileSite.Description,
-		ImageURL:    profileSite.ImageURL,
-		CityID:      profileSite.CityID,
+		ID:                profileSite.ID,
+		Name:              profileSite.Name,
+		Slug:              profileSite.Slug,
+		Description:       profileSite.Description,
+		ImageURL:          profileSite.ImageURL,
+		CityID:            profileSite.CityID,
+		BusinessTypeSlugs: profileSite.BusinessTypeSlugs,
 	}
 }
