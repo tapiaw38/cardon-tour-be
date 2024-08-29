@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"github.com/tapiaw38/cardon-tour-be/internal/platform/appcontext"
+	"github.com/tapiaw38/cardon-tour-be/internal/usecases/business"
 	businesstype "github.com/tapiaw38/cardon-tour-be/internal/usecases/business/business_type"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/profile"
 	profiletype "github.com/tapiaw38/cardon-tour-be/internal/usecases/profile/profile_type"
@@ -33,7 +34,8 @@ type Site struct {
 }
 
 type Business struct {
-	Types BusinessType
+	ListUseCase business.ListUsecase
+	Types       BusinessType
 }
 
 type BusinessType struct {
@@ -58,6 +60,7 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 			GetBySlugUseCase: site.NewGetBySlugUsecase(contextFactory),
 		},
 		Business: Business{
+			ListUseCase: business.NewListUseCase(contextFactory),
 			Types: BusinessType{
 				ListUseCase:      businesstype.NewListUseCase(contextFactory),
 				GetBySlugUseCase: businesstype.NewGetBySlugUsecase(contextFactory),

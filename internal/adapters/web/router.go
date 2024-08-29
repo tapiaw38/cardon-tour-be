@@ -2,6 +2,7 @@ package web
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/business"
 	businesstype "github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/business/business_type"
 	"github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/profile"
 	profiletype "github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/profile/profile_type"
@@ -32,6 +33,8 @@ func RegisterApplicationRoutes(app *gin.Engine, usecases *usecases.UseCases, cfg
 
 	routeGroup.GET("/sites", site.NewListHandler(usecases.Site.ListUseCase))
 	routeGroup.GET("/sites/:slug", site.NewGetBySlugHandler(usecases.Site.GetBySlugUseCase))
+
+	routeGroup.GET("/businesses", business.NewListHandler(usecases.Business.ListUseCase))
 
 	routeGroup.GET("/businesses/types", businesstype.NewListHandler(usecases.Business.Types.ListUseCase))
 	routeGroup.GET("/businesses/types/:slug", businesstype.NewGetBySlugHandler(usecases.Business.Types.GetBySlugUseCase))
