@@ -3,8 +3,8 @@ package domain
 import (
 	"time"
 
-	location "github.com/tapiaw38/cardon-tour-be/internal/domain/location"
 	profile "github.com/tapiaw38/cardon-tour-be/internal/domain/profile"
+	site "github.com/tapiaw38/cardon-tour-be/internal/domain/site"
 )
 
 type (
@@ -21,20 +21,17 @@ type (
 		ID             string
 		BusinessTypeID string
 		BusinessType   *BusinessType
+		SiteID         string
+		Site           *site.Site
 		ProfileID      string
 		Profile        *profile.Profile
 		Name           string
-		Phone          string
+		PhoneNumber    string
 		Email          string
 		Description    string
 		Latitude       float64
 		Longitude      float64
-		CountryID      string
-		Country        *location.Country
-		ProvinceID     string
-		Province       *location.Province
-		CityID         string
-		City           *location.City
+		Active         bool
 		Images         []BusinessImage
 		CreatedAt      time.Time
 	}

@@ -63,7 +63,7 @@ func (r *repository) executeGetByIDQuery(ctx context.Context, id string) (*sql.R
 		FROM sites s
 		LEFT JOIN site_business_types sbt ON sbt.site_id = s.id
 		LEFT JOIN business_types bt ON bt.id = sbt.business_type_id
-		WHERE id = $1`
+		WHERE s.id = $1`
 
 	rows, err := r.db.QueryContext(ctx, query, id)
 	if err != nil {

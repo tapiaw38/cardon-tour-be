@@ -83,6 +83,7 @@ CREATE TABLE businesses (
     id VARCHAR(36) PRIMARY KEY,
     profile_id VARCHAR(36) NOT NULL,
     business_type_id VARCHAR(36) NOT NULL,
+    site_id VARCHAR(36) NOT NULL,
     name VARCHAR(255) NOT NULL,
     phone_number VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
@@ -90,12 +91,10 @@ CREATE TABLE businesses (
     active BOOLEAN NOT NULL DEFAULT true,
     latitude DECIMAL(10, 8),
     longitude DECIMAL(11, 8),
-    city_id VARCHAR(36) NOT NULL,
     created_at TIMESTAMP NOT NULL,
     CONSTRAINT fk_profile_business FOREIGN KEY (profile_id) REFERENCES profiles(id),
     CONSTRAINT fk_business_type FOREIGN KEY (business_type_id) REFERENCES business_types(id),
-    CONSTRAINT fk_city_business FOREIGN KEY (city_id) REFERENCES cities(id),
-    CONSTRAINT unique_business UNIQUE (profile_id, business_type_id, name)
+    CONSTRAINT fk_site_business FOREIGN KEY (site_id) REFERENCES sites(id)
 );
 
 CREATE TABLE business_images (
