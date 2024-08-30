@@ -14,6 +14,7 @@ type (
 	}
 
 	Repository interface {
+		Get(ctx context.Context, id string) (domain.Business, error)
 		List(ctx context.Context, filter ListFilterOptions) ([]domain.Business, error)
 	}
 
