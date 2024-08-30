@@ -34,6 +34,7 @@ func RegisterApplicationRoutes(app *gin.Engine, usecases *usecases.UseCases, cfg
 	routeGroup.GET("/sites", site.NewListHandler(usecases.Site.ListUseCase))
 	routeGroup.GET("/sites/:slug", site.NewGetBySlugHandler(usecases.Site.GetBySlugUseCase))
 
+	routeGroup.GET("/businesses/:id", business.NewGetHandler(usecases.Business.GetUseCase))
 	routeGroup.GET("/businesses", business.NewListHandler(usecases.Business.ListUseCase))
 
 	routeGroup.GET("/businesses/types", businesstype.NewListHandler(usecases.Business.Types.ListUseCase))

@@ -34,6 +34,7 @@ type Site struct {
 }
 
 type Business struct {
+	GetUseCase  business.GetUsecase
 	ListUseCase business.ListUsecase
 	Types       BusinessType
 }
@@ -60,6 +61,7 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 			GetBySlugUseCase: site.NewGetBySlugUsecase(contextFactory),
 		},
 		Business: Business{
+			GetUseCase:  business.NewGetUseCase(contextFactory),
 			ListUseCase: business.NewListUseCase(contextFactory),
 			Types: BusinessType{
 				ListUseCase:      businesstype.NewListUseCase(contextFactory),
