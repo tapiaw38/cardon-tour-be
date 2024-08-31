@@ -28,6 +28,7 @@ type (
 		Name           string
 		PhoneNumber    string
 		Email          string
+		Address        string
 		Description    string
 		Latitude       float64
 		Longitude      float64

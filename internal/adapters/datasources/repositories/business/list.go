@@ -18,7 +18,7 @@ func (r *repository) List(ctx context.Context, filter ListFilterOptions) ([]doma
 	var businesses []domain.Business
 	for rows.Next() {
 		var id, profileID, businessTypeID, siteID, name string
-		var description, phoneNumber, email sql.NullString
+		var description, address, phoneNumber, email sql.NullString
 		var active bool
 		var latitude, longitude sql.NullFloat64
 		var createdAt time.Time
@@ -29,6 +29,7 @@ func (r *repository) List(ctx context.Context, filter ListFilterOptions) ([]doma
 			&siteID,
 			&name,
 			&description,
+			&address,
 			&phoneNumber,
 			&email,
 			&active,
@@ -73,6 +74,7 @@ func (r *repository) executeListQuery(ctx context.Context, filter ListFilterOpti
 		bs.description,
 		bs.phone_number,
 		bs.email,
+		bs.address,
 		bs.active,
 		bs.latitude,
 		bs.longitude,

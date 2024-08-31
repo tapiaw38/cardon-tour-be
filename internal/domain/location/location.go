@@ -11,6 +11,8 @@ type (
 		ID        string
 		Name      string
 		Code      string
+		Latitude  float64
+		Longitude float64
 		CountryID string
 		Country   *Country
 	}
@@ -19,9 +21,9 @@ type (
 		ID         string
 		Name       string
 		Code       string
+		Latitude   float64
+		Longitude  float64
 		ProvinceID string
 		Province   *Province
-		CountryID  string
-		Country    *Country
 	}
 )

@@ -15,7 +15,7 @@ func (r *repository) Get(ctx context.Context, id string) (domain.Business, error
 	}
 
 	var businessID, profileID, businessTypeID, siteID, name string
-	var description, phoneNumber, email sql.NullString
+	var description, phoneNumber, email, address sql.NullString
 	var active bool
 	var latitude, longitude sql.NullFloat64
 	var createdAt time.Time
@@ -26,6 +26,7 @@ func (r *repository) Get(ctx context.Context, id string) (domain.Business, error
 		&siteID,
 		&name,
 		&description,
+		&address,
 		&phoneNumber,
 		&email,
 		&active,
@@ -46,6 +47,7 @@ func (r *repository) Get(ctx context.Context, id string) (domain.Business, error
 		Description:    description.String,
 		PhoneNumber:    phoneNumber.String,
 		Email:          email.String,
+		Address:        address.String,
 		Active:         active,
 		Latitude:       latitude.Float64,
 		Longitude:      longitude.Float64,
@@ -61,6 +63,7 @@ func (r *repository) executeGetQuery(ctx context.Context, id string) (*sql.Row, 
 		site_id,
 		name,
 		description,
+		address,
 		phone_number,
 		email,
 		active,
