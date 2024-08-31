@@ -4,17 +4,22 @@ import (
 	"context"
 	"database/sql"
 
-	domain "github.com/tapiaw38/cardon-tour-be/internal/domain/site"
+	domain_city "github.com/tapiaw38/cardon-tour-be/internal/domain/location"
+	domain_site "github.com/tapiaw38/cardon-tour-be/internal/domain/site"
 )
 
-func (r *repository) GetBySlug(ctx context.Context, slug string) (*domain.Site, error) {
+func (r *repository) GetBySlug(ctx context.Context, slug string) (*domain_site.Site, error) {
 	rows, err := r.executeGetBySlugQuery(ctx, slug)
 	if err != nil {
-		return &domain.Site{}, err
+		return &domain_site.Site{}, err
 	}
 
 	var id, siteSlug, name, description, cityID string
 	var imageURL sql.NullString
+
+	var cityName, cityCode, cityProvinceID sql.NullString
+	var cityLatitude, cityLongitude sql.NullFloat64
+
 	var businessTypeSlugs []string
 
 	for rows.Next() {
@@ -26,9 +31,14 @@ func (r *repository) GetBySlug(ctx context.Context, slug string) (*domain.Site, 
 			&description,
 			&imageURL,
 			&cityID,
+			&cityName,
+			&cityCode,
+			&cityProvinceID,
+			&cityLatitude,
+			&cityLongitude,
 			&businessTypeSlug,
 		); err != nil {
-			return &domain.Site{}, err
+			return &domain_site.Site{}, err
 		}
 
 		if businessTypeSlug.Valid {
@@ -37,16 +47,23 @@ func (r *repository) GetBySlug(ctx context.Context, slug string) (*domain.Site, 
 	}
 
 	if err = rows.Err(); err != nil {
-		return &domain.Site{}, err
+		return &domain_site.Site{}, err
 	}
 
-	return &domain.Site{
-		ID:                id,
-		Slug:              siteSlug,
-		Name:              name,
-		Description:       description,
-		ImageURL:          imageURL.String,
-		CityID:            cityID,
+	return &domain_site.Site{
+		ID:          id,
+		Slug:        siteSlug,
+		Name:        name,
+		Description: description,
+		ImageURL:    imageURL.String,
+		CityID:      cityID,
+		City: &domain_city.City{
+			Name:       cityName.String,
+			Code:       cityCode.String,
+			ProvinceID: cityProvinceID.String,
+			Latitude:   cityLatitude.Float64,
+			Longitude:  cityLongitude.Float64,
+		},
 		BusinessTypeSlugs: businessTypeSlugs,
 	}, nil
 }
@@ -59,10 +76,16 @@ func (r *repository) executeGetBySlugQuery(ctx context.Context, slug string) (*s
 			s.description, 
 			s.image_url, 
 			s.city_id,
+			c.name AS city_name,
+			c.code AS city_code,
+			c.province_id AS city_province_id,
+			c.latitude AS city_latitude,
+			c.longitude AS city_longitude,
 			bt.slug AS business_type_slug
 		FROM sites s
 		LEFT JOIN site_business_types sbt ON sbt.site_id = s.id
 		LEFT JOIN business_types bt ON bt.id = sbt.business_type_id
+		LEFT JOIN cities c ON c.id = s.city_id
 		WHERE s.slug = $1`
 
 	rows, err := r.db.QueryContext(ctx, query, slug)
