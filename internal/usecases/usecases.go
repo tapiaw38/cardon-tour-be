@@ -5,6 +5,7 @@ import (
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/business"
 	businesstype "github.com/tapiaw38/cardon-tour-be/internal/usecases/business/business_type"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/profile"
+	profilesite "github.com/tapiaw38/cardon-tour-be/internal/usecases/profile/profile_site"
 	profiletype "github.com/tapiaw38/cardon-tour-be/internal/usecases/profile/profile_type"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/site"
 )
@@ -20,12 +21,18 @@ type Profile struct {
 	CreateUseCase      profile.CreateUsecase
 	UpdateUseCase      profile.UpdateUsecase
 	Types              ProfileType
+	Sites              ProfileSite
 }
 
 type ProfileType struct {
 	CreateUseCase profiletype.CreateUsecase
 	DeleteUseCase profiletype.DeleteUsecase
 	ListUseCase   profiletype.ListUsecase
+}
+
+type ProfileSite struct {
+	CreateUseCase profilesite.CreateUsecase
+	DeleteUseCase profilesite.DeleteUsecase
 }
 
 type Site struct {
@@ -54,6 +61,10 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 				CreateUseCase: profiletype.NewCreateUseCase(contextFactory),
 				DeleteUseCase: profiletype.NewDeleteUseCase(contextFactory),
 				ListUseCase:   profiletype.NewListUseCase(contextFactory),
+			},
+			Sites: ProfileSite{
+				CreateUseCase: profilesite.NewCreateUseCase(contextFactory),
+				DeleteUseCase: profilesite.NewDeleteUseCase(contextFactory),
 			},
 		},
 		Site: Site{

@@ -17,6 +17,11 @@ func NewCreateHandler(usecase profile.CreateUsecase) gin.HandlerFunc {
 		}
 
 		claimUserID := c.MustGet("claims").(domain.Claims).UserId
+		if claimUserID == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+			return
+		}
+
 		profileInput.UserID = claimUserID
 
 		profile := toProfileInput(profileInput)
