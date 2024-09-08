@@ -8,11 +8,15 @@ import (
 
 type (
 	DeleteUsecase interface {
-		Execute(context.Context, string, string) error
+		Execute(context.Context, string, string) (DeleteOutput, error)
 	}
 
 	deleteUsecase struct {
 		contextFactory appcontext.Factory
+	}
+
+	DeleteOutput struct {
+		Data ProfileSiteOutputData `json:"data"`
 	}
 )
 
@@ -22,8 +26,15 @@ func NewDeleteUseCase(contextFactory appcontext.Factory) DeleteUsecase {
 	}
 }
 
-func (u *deleteUsecase) Execute(ctx context.Context, profileID string, siteID string) error {
+func (u *deleteUsecase) Execute(ctx context.Context, profileID string, siteID string) (DeleteOutput, error) {
 	app := u.contextFactory()
 
-	return app.Repositories.ProfileSite.Delete(ctx, profileID, siteID)
+	profileSite, err := app.Repositories.ProfileSite.Delete(ctx, profileID, siteID)
+	if err != nil {
+		return DeleteOutput{}, err
+	}
+
+	return DeleteOutput{
+		Data: toProfileSiteOutputData(profileSite),
+	}, nil
 }

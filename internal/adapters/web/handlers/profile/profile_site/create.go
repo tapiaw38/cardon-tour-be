@@ -15,12 +15,12 @@ func NewCreateHandler(usecase profilesite.CreateUsecase) gin.HandlerFunc {
 			return
 		}
 
-		err := usecase.Execute(c.Request.Context(), profileSiteInput.ProfileID, profileSiteInput.SiteID)
+		profileSite, err := usecase.Execute(c.Request.Context(), profileSiteInput.ProfileID, profileSiteInput.SiteID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
-		c.Status(http.StatusCreated)
+		c.JSON(http.StatusOK, profileSite)
 	}
 }

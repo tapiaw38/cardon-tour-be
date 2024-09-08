@@ -17,6 +17,7 @@ CREATE TABLE countries (
     id VARCHAR(36) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     code VARCHAR(2) NOT NULL,
+    image_url VARCHAR(1000),
     description TEXT
 );
 
@@ -25,6 +26,7 @@ CREATE TABLE provinces (
     name VARCHAR(255) NOT NULL,
     code VARCHAR(2) NOT NULL,
     country_id VARCHAR(36) NOT NULL,
+    image_url VARCHAR(1000),
     latitude DECIMAL(10, 8),
     longitude DECIMAL(11, 8),
     description TEXT,
@@ -37,6 +39,7 @@ CREATE TABLE cities (
     name VARCHAR(255) NOT NULL,
     code VARCHAR(2) NOT NULL,
     province_id VARCHAR(36) NOT NULL,
+    image_url VARCHAR(1000),
     latitude DECIMAL(10, 8),
     longitude DECIMAL(11, 8),
     description TEXT,

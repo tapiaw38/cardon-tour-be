@@ -3,12 +3,14 @@ package profilesite
 import (
 	"context"
 	"database/sql"
+
+	domain "github.com/tapiaw38/cardon-tour-be/internal/domain/profile"
 )
 
 type (
 	Repository interface {
-		Create(context.Context, string, string) error
-		Delete(context.Context, string, string) error
+		Create(context.Context, string, string) (domain.ProfileSite, error)
+		Delete(context.Context, string, string) (domain.ProfileSite, error)
 	}
 
 	repository struct {

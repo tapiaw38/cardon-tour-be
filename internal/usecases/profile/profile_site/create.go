@@ -8,11 +8,15 @@ import (
 
 type (
 	CreateUsecase interface {
-		Execute(context.Context, string, string) error
+		Execute(context.Context, string, string) (CreateOutput, error)
 	}
 
 	createUsecase struct {
 		contextFactory appcontext.Factory
+	}
+
+	CreateOutput struct {
+		Data ProfileSiteOutputData `json:"data"`
 	}
 )
 
@@ -22,8 +26,15 @@ func NewCreateUseCase(contextFactory appcontext.Factory) CreateUsecase {
 	}
 }
 
-func (u *createUsecase) Execute(ctx context.Context, profileID string, siteID string) error {
+func (u *createUsecase) Execute(ctx context.Context, profileID string, siteID string) (CreateOutput, error) {
 	app := u.contextFactory()
 
-	return app.Repositories.ProfileSite.Create(ctx, profileID, siteID)
+	profileSite, err := app.Repositories.ProfileSite.Create(ctx, profileID, siteID)
+	if err != nil {
+		return CreateOutput{}, err
+	}
+
+	return CreateOutput{
+		Data: toProfileSiteOutputData(profileSite),
+	}, nil
 }

@@ -17,12 +17,12 @@ func NewDeleteHandler(usecase profilesite.DeleteUsecase) gin.HandlerFunc {
 			return
 		}
 
-		err := usecase.Execute(c.Request.Context(), profileID, siteID)
+		profileSite, err := usecase.Execute(c.Request.Context(), profileID, siteID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
-		c.Status(http.StatusOK)
+		c.JSON(http.StatusOK, profileSite)
 	}
 }

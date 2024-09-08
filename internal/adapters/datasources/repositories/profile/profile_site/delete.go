@@ -1,22 +1,41 @@
 package profilesite
 
-import "context"
+import (
+	"context"
+	"database/sql"
 
-func (r *repository) Delete(ctx context.Context, profileID string, siteID string) error {
-	err := r.executeDeleteQuery(ctx, profileID, siteID)
+	domain "github.com/tapiaw38/cardon-tour-be/internal/domain/profile"
+)
 
-	return err
+func (r *repository) Delete(ctx context.Context, profileID string, siteID string) (domain.ProfileSite, error) {
+	row, err := r.executeDeleteQuery(ctx, profileID, siteID)
+	if err != nil {
+		return domain.ProfileSite{}, err
+	}
+
+	var profile, site string
+	err = row.Scan(&profile, &site)
+
+	return domain.ProfileSite{
+		ProfileID: profile,
+		SiteID:    site,
+	}, err
 }
 
-func (r *repository) executeDeleteQuery(ctx context.Context, profileID string, siteID string) error {
-	query := `DELETE FROM profile_sites WHERE profile_id = $1 AND site_id = $2`
+func (r *repository) executeDeleteQuery(ctx context.Context, profileID string, siteID string) (*sql.Row, error) {
+	query := `DELETE FROM profile_sites 
+		WHERE profile_id = $1 AND site_id = $2
+		RETURNING profile_id, site_id`
 
 	args := []any{
 		profileID,
 		siteID,
 	}
 
-	_, err := r.db.ExecContext(ctx, query, args...)
+	row := r.db.QueryRowContext(ctx, query, args...)
+	if row.Err() != nil {
+		return nil, row.Err()
+	}
 
-	return err
+	return row, nil
 }
