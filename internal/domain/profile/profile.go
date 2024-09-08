@@ -16,4 +16,9 @@ type (
 		ProfileSitesID []string
 		ProfileSites   []site.Site
 	}
+
+	ProfileSite struct {
+		ProfileID string
+		SiteID    string
+	}
 )

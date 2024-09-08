@@ -17,7 +17,13 @@ func NewGetByUserIDHandler(usecase profile.GetByUserIDUsecase) gin.HandlerFunc {
 			return
 		}
 
-		profile, err := usecase.Execute(c.Request.Context(), claims.UserId)
+		userID := claims.UserId
+		if userID == "" {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
+			return
+		}
+
+		profile, err := usecase.Execute(c.Request.Context(), userID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, err)
 			return

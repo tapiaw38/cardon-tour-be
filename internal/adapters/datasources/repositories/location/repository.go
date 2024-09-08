@@ -12,6 +12,7 @@ type (
 		CreateCountry(context.Context, domain.Country) (string, error)
 		DeleteCountry(context.Context, string) error
 		CreateProvince(context.Context, domain.Province, string) (string, error)
+		ListProvince(context.Context) ([]domain.Province, error)
 		DeleteProvince(context.Context, string) error
 		CreateCity(context.Context, domain.City, string) (string, error)
 		DeleteCity(context.Context, string) error
