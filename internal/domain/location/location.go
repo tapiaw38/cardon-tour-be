@@ -10,7 +10,7 @@ type (
 	Province struct {
 		ID          string
 		Name        string
-		Code        string
+		Slug        string
 		Description string
 		ImageURL    string
 		Latitude    float64
@@ -22,7 +22,7 @@ type (
 	City struct {
 		ID          string
 		Name        string
-		Code        string
+		Slug        string
 		Description string
 		ImageURL    string
 		Latitude    float64

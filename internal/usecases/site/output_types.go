@@ -4,20 +4,21 @@ import domain "github.com/tapiaw38/cardon-tour-be/internal/domain/site"
 
 type (
 	CityOutputData struct {
-		Name      string  `json:"name"`
-		Code      string  `json:"code"`
-		Latitude  float64 `json:"latitude"`
-		Longitude float64 `json:"longitude"`
+		Name       string  `json:"name"`
+		Slug       string  `json:"slug"`
+		Latitude   float64 `json:"latitude"`
+		Longitude  float64 `json:"longitude"`
+		ProvinceID string  `json:"province_id"`
 	}
 
 	SiteOutputData struct {
-		ID                string         `json:"id"`
-		Slug              string         `json:"slug"`
-		Name              string         `json:"name"`
-		Description       string         `json:"description"`
-		ImageURL          string         `json:"image_url"`
-		City              CityOutputData `json:"city"`
-		BusinessTypeSlugs []string       `json:"business_type_slugs,omitempty"`
+		ID             string         `json:"id"`
+		Slug           string         `json:"slug"`
+		Name           string         `json:"name"`
+		Description    string         `json:"description"`
+		ImageURL       string         `json:"image_url"`
+		City           CityOutputData `json:"city"`
+		BusinessTypeID []string       `json:"business_type_ids,omitempty"`
 	}
 )
 
@@ -29,11 +30,12 @@ func toSiteOutputData(site *domain.Site) SiteOutputData {
 		Description: site.Description,
 		ImageURL:    site.ImageURL,
 		City: CityOutputData{
-			Name:      site.City.Name,
-			Code:      site.City.Code,
-			Latitude:  site.City.Latitude,
-			Longitude: site.City.Longitude,
+			Name:       site.City.Name,
+			Slug:       site.City.Slug,
+			ProvinceID: site.City.ProvinceID,
+			Latitude:   site.City.Latitude,
+			Longitude:  site.City.Longitude,
 		},
-		BusinessTypeSlugs: site.BusinessTypeSlugs,
+		BusinessTypeID: site.BusinessTypeID,
 	}
 }

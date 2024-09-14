@@ -39,11 +39,13 @@ func RegisterApplicationRoutes(app *gin.Engine, usecases *usecases.UseCases, cfg
 	routeGroup.DELETE("/profiles/:profile_id/sites/:site_id", profilesite.NewDeleteHandler(usecases.Profile.Sites.DeleteUseCase))
 
 	routeGroup.GET("/sites", site.NewListHandler(usecases.Site.ListUseCase))
-	routeGroup.GET("/sites/:slug", site.NewGetBySlugHandler(usecases.Site.GetBySlugUseCase))
+	routeGroup.GET("/sites/sites-by-id/:id", site.NewGetHandler(usecases.Site.GetUseCase))
+	routeGroup.GET("/sites/sites-by-slug/:slug", site.NewGetBySlugHandler(usecases.Site.GetBySlugUseCase))
 
 	routeGroup.GET("/businesses/:id", business.NewGetHandler(usecases.Business.GetUseCase))
 	routeGroup.GET("/businesses", business.NewListHandler(usecases.Business.ListUseCase))
 
 	routeGroup.GET("/businesses/types", businesstype.NewListHandler(usecases.Business.Types.ListUseCase))
-	routeGroup.GET("/businesses/types/:slug", businesstype.NewGetBySlugHandler(usecases.Business.Types.GetBySlugUseCase))
+	routeGroup.GET("/businesses/types-by-id/:id", businesstype.NewGetHandler(usecases.Business.Types.GetUseCase))
+	routeGroup.GET("/businesses/types-by-slug/:slug", businesstype.NewGetBySlugHandler(usecases.Business.Types.GetBySlugUseCase))
 }

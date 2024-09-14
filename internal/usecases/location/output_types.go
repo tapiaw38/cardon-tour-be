@@ -6,7 +6,7 @@ type (
 	ProvinceOutputData struct {
 		ID          string  `json:"id"`
 		Name        string  `json:"name"`
-		Code        string  `json:"code"`
+		Slug        string  `json:"slug"`
 		Description string  `json:"description"`
 		ImageURL    string  `json:"image_url"`
 		Latitude    float64 `json:"latitude"`
@@ -19,7 +19,7 @@ func toProvinceOutputData(province *domain.Province) ProvinceOutputData {
 	return ProvinceOutputData{
 		ID:          province.ID,
 		Name:        province.Name,
-		Code:        province.Code,
+		Slug:        province.Slug,
 		Description: province.Description,
 		ImageURL:    province.ImageURL,
 		Latitude:    province.Latitude,
