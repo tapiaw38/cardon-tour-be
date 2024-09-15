@@ -37,7 +37,7 @@ func (u *getByUserIDUsecase) Execute(ctx context.Context, userID string) (GetByU
 
 	var profileSites []domain.Site
 	for _, siteID := range profile.ProfileSitesID {
-		site, err := app.Repositories.Site.GetByID(ctx, siteID)
+		site, err := app.Repositories.Site.Get(ctx, siteID)
 		if err != nil {
 			return GetByUserIDOutput{}, err
 		}

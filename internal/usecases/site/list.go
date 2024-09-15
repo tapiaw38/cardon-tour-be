@@ -3,12 +3,13 @@ package site
 import (
 	"context"
 
+	"github.com/tapiaw38/cardon-tour-be/internal/adapters/datasources/repositories/site"
 	"github.com/tapiaw38/cardon-tour-be/internal/platform/appcontext"
 )
 
 type (
 	ListUsecase interface {
-		Execute(context.Context) (ListOutput, error)
+		Execute(context.Context, ListFilterOptions) (ListOutput, error)
 	}
 
 	listUsecase struct {
@@ -18,6 +19,8 @@ type (
 	ListOutput struct {
 		Data []SiteOutputData `json:"data"`
 	}
+
+	ListFilterOptions site.ListFilterOptions
 )
 
 func NewListUseCase(contextFactory appcontext.Factory) ListUsecase {
@@ -26,10 +29,10 @@ func NewListUseCase(contextFactory appcontext.Factory) ListUsecase {
 	}
 }
 
-func (u *listUsecase) Execute(ctx context.Context) (ListOutput, error) {
+func (u *listUsecase) Execute(ctx context.Context, filters ListFilterOptions) (ListOutput, error) {
 	app := u.contextFactory()
 
-	sites, err := app.Repositories.Site.List(ctx)
+	sites, err := app.Repositories.Site.List(ctx, site.ListFilterOptions(filters))
 	if err != nil {
 		return ListOutput{}, err
 	}

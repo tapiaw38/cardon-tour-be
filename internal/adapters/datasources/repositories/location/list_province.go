@@ -15,13 +15,13 @@ func (r *repository) ListProvince(ctx context.Context) ([]domain.Province, error
 
 	var provinces []domain.Province
 	for rows.Next() {
-		var ID, name, code, countryID string
+		var ID, name, slug, countryID string
 		var imageURL, description sql.NullString
 		var latitude, longitude sql.NullFloat64
 		err = rows.Scan(
 			&ID,
 			&name,
-			&code,
+			&slug,
 			&countryID,
 			&imageURL,
 			&latitude,
@@ -36,7 +36,7 @@ func (r *repository) ListProvince(ctx context.Context) ([]domain.Province, error
 		provinces = append(provinces, domain.Province{
 			ID:          ID,
 			Name:        name,
-			Code:        code,
+			Slug:        slug,
 			CountryID:   countryID,
 			ImageURL:    imageURL.String,
 			Latitude:    latitude.Float64,
@@ -49,14 +49,14 @@ func (r *repository) ListProvince(ctx context.Context) ([]domain.Province, error
 }
 
 func (r *repository) executeListProvinceQuery(ctx context.Context) (*sql.Rows, error) {
-	query := `SELECT 
-			id, 
-			name, 
-			code, 
-			country_id, 
-			image_url, 
-			latitude, 
-			longitude, 
+	query := `SELECT
+			id,
+			name,
+			slug,
+			country_id,
+			image_url,
+			latitude,
+			longitude,
 			description
 		FROM provinces;`
 

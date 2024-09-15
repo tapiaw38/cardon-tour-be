@@ -38,11 +38,13 @@ type ProfileSite struct {
 }
 
 type Location struct {
-	ListProvinceUseCase location.ListProvinceUsecase
+	GetProvinceBySlugUseCase location.GetProvinceBySlugUsecase
+	ListProvinceUseCase      location.ListProvinceUsecase
 }
 
 type Site struct {
 	ListUseCase      site.ListUsecase
+	GetUseCase       site.GetUsecase
 	GetBySlugUseCase site.GetBySlugUsecase
 }
 
@@ -54,6 +56,7 @@ type Business struct {
 
 type BusinessType struct {
 	ListUseCase      businesstype.ListUsecase
+	GetUseCase       businesstype.GetUsecase
 	GetBySlugUseCase businesstype.GetBySlugUsecase
 }
 
@@ -74,10 +77,12 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 			},
 		},
 		Location: Location{
-			ListProvinceUseCase: location.NewListProvinceUseCase(contextFactory),
+			GetProvinceBySlugUseCase: location.NewGetProvinceBySlugUseCase(contextFactory),
+			ListProvinceUseCase:      location.NewListProvinceUseCase(contextFactory),
 		},
 		Site: Site{
 			ListUseCase:      site.NewListUseCase(contextFactory),
+			GetUseCase:       site.NewGetUsecase(contextFactory),
 			GetBySlugUseCase: site.NewGetBySlugUsecase(contextFactory),
 		},
 		Business: Business{
@@ -85,6 +90,7 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 			ListUseCase: business.NewListUseCase(contextFactory),
 			Types: BusinessType{
 				ListUseCase:      businesstype.NewListUseCase(contextFactory),
+				GetUseCase:       businesstype.NewGetUsecase(contextFactory),
 				GetBySlugUseCase: businesstype.NewGetBySlugUsecase(contextFactory),
 			},
 		},

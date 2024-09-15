@@ -23,14 +23,14 @@ func (r *repository) executeCreateCityQuery(ctx context.Context, city domain.Cit
 	query := `INSERT INTO cities(
 					id,
 					name,
-					code,
+					slug,
 					province_id
 				) VALUES ($1, $2, $3, $4) RETURNING id`
 
 	args := []any{
 		city.ID,
 		city.Name,
-		city.Code,
+		city.Slug,
 		provinceID,
 	}
 

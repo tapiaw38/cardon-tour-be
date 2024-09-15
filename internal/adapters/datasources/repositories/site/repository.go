@@ -9,8 +9,8 @@ import (
 
 type (
 	Repository interface {
-		List(ctx context.Context) ([]domain.Site, error)
-		GetByID(context.Context, string) (*domain.Site, error)
+		List(context.Context, ListFilterOptions) ([]domain.Site, error)
+		Get(context.Context, string) (*domain.Site, error)
 		GetBySlug(context.Context, string) (*domain.Site, error)
 	}
 

@@ -23,14 +23,14 @@ func (r *repository) executeCreateProvinceQuery(ctx context.Context, province do
 	query := `INSERT INTO provinces(
 					id,
 					name,
-					code,
+					slug,
 					country_id
 				) VALUES ($1, $2, $3, $4) RETURNING id`
 
 	args := []any{
 		province.ID,
 		province.Name,
-		province.Code,
+		province.Slug,
 		countryID,
 	}
 
