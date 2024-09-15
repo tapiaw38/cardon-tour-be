@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"database/sql"
+	"github.com/tapiaw38/cardon-tour-be/internal/adapters/datasources/repositories/event"
 
 	"github.com/tapiaw38/cardon-tour-be/internal/adapters/datasources/repositories/business"
 	businesstype "github.com/tapiaw38/cardon-tour-be/internal/adapters/datasources/repositories/business/business_type"
@@ -20,6 +21,7 @@ type Repositories struct {
 	Site         site.Repository
 	Business     business.Repository
 	BusinessType businesstype.Repository
+	Event        event.Repository
 }
 
 func CreateRepositories(db *sql.DB) *Repositories {
@@ -31,5 +33,6 @@ func CreateRepositories(db *sql.DB) *Repositories {
 		Site:         site.NewRepository(db),
 		Business:     business.NewRepository(db),
 		BusinessType: businesstype.NewRepository(db),
+		Event:        event.NewRepository(db),
 	}
 }

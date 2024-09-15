@@ -18,7 +18,7 @@ type (
 		Description    string         `json:"description"`
 		ImageURL       string         `json:"image_url"`
 		City           CityOutputData `json:"city"`
-		BusinessTypeID []string       `json:"business_type_ids,omitempty"`
+		BusinessTypeID []string       `json:"business_type_ids"`
 	}
 )
 

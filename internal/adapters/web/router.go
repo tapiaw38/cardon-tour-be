@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/business"
 	businesstype "github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/business/business_type"
+	"github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/event"
 	"github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/location"
 	"github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/profile"
 	profilesite "github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/profile/profile_site"
@@ -33,6 +34,7 @@ func RegisterApplicationRoutes(app *gin.Engine, usecases *usecases.UseCases, cfg
 	routeGroup.DELETE("/profiles/types/:id", profiletype.NewDeleteHandler(usecases.Profile.Types.DeleteUseCase))
 	routeGroup.GET("/profiles/types", profiletype.NewListHandler(usecases.Profile.Types.ListUseCase))
 
+	routeGroup.GET("/locations/provinces/:slug", location.NewGetProvinceBySlugHandler(usecases.Location.GetProvinceBySlugUseCase))
 	routeGroup.GET("/locations/provinces", location.NewListProvinceHandler(usecases.Location.ListProvinceUseCase))
 
 	routeGroup.POST("/profiles/sites", profilesite.NewCreateHandler(usecases.Profile.Sites.CreateUseCase))
@@ -48,4 +50,7 @@ func RegisterApplicationRoutes(app *gin.Engine, usecases *usecases.UseCases, cfg
 	routeGroup.GET("/businesses/types", businesstype.NewListHandler(usecases.Business.Types.ListUseCase))
 	routeGroup.GET("/businesses/types-by-id/:id", businesstype.NewGetHandler(usecases.Business.Types.GetUseCase))
 	routeGroup.GET("/businesses/types-by-slug/:slug", businesstype.NewGetBySlugHandler(usecases.Business.Types.GetBySlugUseCase))
+
+	routeGroup.GET("/events/:id", event.NewGetHandler(usecases.Event.GetUseCase))
+	routeGroup.GET("/events", event.NewListHandler(usecases.Event.ListUseCase))
 }

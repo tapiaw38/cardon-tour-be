@@ -4,6 +4,7 @@ import (
 	"github.com/tapiaw38/cardon-tour-be/internal/platform/appcontext"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/business"
 	businesstype "github.com/tapiaw38/cardon-tour-be/internal/usecases/business/business_type"
+	"github.com/tapiaw38/cardon-tour-be/internal/usecases/event"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/location"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/profile"
 	profilesite "github.com/tapiaw38/cardon-tour-be/internal/usecases/profile/profile_site"
@@ -16,6 +17,7 @@ type UseCases struct {
 	Location Location
 	Site     Site
 	Business Business
+	Event    Event
 }
 
 type Profile struct {
@@ -38,7 +40,8 @@ type ProfileSite struct {
 }
 
 type Location struct {
-	ListProvinceUseCase location.ListProvinceUsecase
+	GetProvinceBySlugUseCase location.GetProvinceBySlugUsecase
+	ListProvinceUseCase      location.ListProvinceUsecase
 }
 
 type Site struct {
@@ -59,6 +62,11 @@ type BusinessType struct {
 	GetBySlugUseCase businesstype.GetBySlugUsecase
 }
 
+type Event struct {
+	GetUseCase  event.GetUsecase
+	ListUseCase event.ListUsecase
+}
+
 func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 	return &UseCases{
 		Profile: Profile{
@@ -76,7 +84,8 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 			},
 		},
 		Location: Location{
-			ListProvinceUseCase: location.NewListProvinceUseCase(contextFactory),
+			GetProvinceBySlugUseCase: location.NewGetProvinceBySlugUseCase(contextFactory),
+			ListProvinceUseCase:      location.NewListProvinceUseCase(contextFactory),
 		},
 		Site: Site{
 			ListUseCase:      site.NewListUseCase(contextFactory),
@@ -91,6 +100,10 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 				GetUseCase:       businesstype.NewGetUsecase(contextFactory),
 				GetBySlugUseCase: businesstype.NewGetBySlugUsecase(contextFactory),
 			},
+		},
+		Event: Event{
+			GetUseCase:  event.NewGetUseCase(contextFactory),
+			ListUseCase: event.NewListUseCase(contextFactory),
 		},
 	}
 }
