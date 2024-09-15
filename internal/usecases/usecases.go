@@ -38,7 +38,8 @@ type ProfileSite struct {
 }
 
 type Location struct {
-	ListProvinceUseCase location.ListProvinceUsecase
+	GetProvinceBySlugUseCase location.GetProvinceBySlugUsecase
+	ListProvinceUseCase      location.ListProvinceUsecase
 }
 
 type Site struct {
@@ -76,7 +77,8 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 			},
 		},
 		Location: Location{
-			ListProvinceUseCase: location.NewListProvinceUseCase(contextFactory),
+			GetProvinceBySlugUseCase: location.NewGetProvinceBySlugUseCase(contextFactory),
+			ListProvinceUseCase:      location.NewListProvinceUseCase(contextFactory),
 		},
 		Site: Site{
 			ListUseCase:      site.NewListUseCase(contextFactory),

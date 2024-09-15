@@ -33,6 +33,7 @@ func RegisterApplicationRoutes(app *gin.Engine, usecases *usecases.UseCases, cfg
 	routeGroup.DELETE("/profiles/types/:id", profiletype.NewDeleteHandler(usecases.Profile.Types.DeleteUseCase))
 	routeGroup.GET("/profiles/types", profiletype.NewListHandler(usecases.Profile.Types.ListUseCase))
 
+	routeGroup.GET("/locations/provinces/:slug", location.NewGetProvinceBySlugHandler(usecases.Location.GetProvinceBySlugUseCase))
 	routeGroup.GET("/locations/provinces", location.NewListProvinceHandler(usecases.Location.ListProvinceUseCase))
 
 	routeGroup.POST("/profiles/sites", profilesite.NewCreateHandler(usecases.Profile.Sites.CreateUseCase))
