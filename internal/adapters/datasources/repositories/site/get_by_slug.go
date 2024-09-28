@@ -20,8 +20,7 @@ func (r *repository) GetBySlug(ctx context.Context, slug string) (*domain_site.S
 	var cityName, citySlug, cityProvinceID sql.NullString
 	var cityLatitude, cityLongitude sql.NullFloat64
 
-	var businessTypeIDs []string
-
+	businessTypeIDs := []string{}
 	for rows.Next() {
 		var businessTypeID sql.NullString
 		if err := rows.Scan(

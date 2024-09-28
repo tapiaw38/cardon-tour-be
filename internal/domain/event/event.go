@@ -1,6 +1,9 @@
 package domain
 
-import "time"
+import (
+	domain "github.com/tapiaw38/cardon-tour-be/internal/domain/site"
+	"time"
+)
 
 type (
 	EventType struct {
@@ -10,6 +13,7 @@ type (
 
 	EventSchedule struct {
 		ID        string
+		EventID   string
 		Active    bool
 		StartAt   time.Time
 		EndAt     time.Time
@@ -19,10 +23,12 @@ type (
 	Event struct {
 		ID          string
 		EventTypeID string
+		SiteID      string
+		Site        *domain.Site
 		EventType   *EventType
 		Name        string
 		Description string
-		Schedule    *EventSchedule
+		Schedule    []EventSchedule
 		CreatedAt   time.Time
 		CreatedBy   string
 	}

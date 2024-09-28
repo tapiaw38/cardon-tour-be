@@ -38,6 +38,24 @@ func ParseTimeQueryValue(value string, layout string) time.Time {
 	return timeValue
 }
 
+func ParseBoolQueryValue(value string) bool {
+	boolValue, err := strconv.ParseBool(value)
+	if err != nil {
+		return false
+	}
+
+	return boolValue
+}
+
+func ParseBoolPointerQueryValue(value string) *bool {
+	boolValue := ParseBoolQueryValue(value)
+	if boolValue {
+		return &boolValue
+	}
+
+	return nil
+}
+
 func GetClaimsFromContext(c *gin.Context) (*domain.Claims, error) {
 	claims, exists := c.Get("claims")
 	if !exists {

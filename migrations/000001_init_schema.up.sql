@@ -118,15 +118,15 @@ CREATE TABLE event_types (
 CREATE TABLE events (
     id VARCHAR(36) PRIMARY KEY,
     event_type_id VARCHAR(36) NOT NULL,
-    city_id VARCHAR(36) NOT NULL,
+    site_id VARCHAR(36) NOT NULL,
     name VARCHAR(255) NOT NULL,
     description TEXT,
     created_at TIMESTAMP NOT NULL,
     created_by VARCHAR(36) NOT NULL,
     CONSTRAINT fk_event_type FOREIGN KEY (event_type_id) REFERENCES event_types(id),
     CONSTRAINT fk_event_creator FOREIGN KEY (created_by) REFERENCES profiles(id),
-    CONSTRAINT fk_event_city FOREIGN KEY (city_id) REFERENCES cities(id),
-    CONSTRAINT unique_event UNIQUE (event_type_id, city_id, name)
+    CONSTRAINT fk_event_site FOREIGN KEY (site_id) REFERENCES sites(id),
+    CONSTRAINT unique_event UNIQUE (event_type_id, site_id, name)
 );
 
 CREATE TABLE event_schedules (
