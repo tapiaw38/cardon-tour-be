@@ -27,10 +27,11 @@ func DecodeToken(tokenString, secret string) (*domain.Claims, error) {
 	return nil, errors.New("invalid token")
 }
 
-func CheckAuthMiddleware(config config.Config) gin.HandlerFunc {
+func CheckAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		configService := config.GetConfigService()
 		tokenString := strings.TrimSpace(c.GetHeader("Authorization"))
-		claims, err := DecodeToken(tokenString, config.JWTSecret)
+		claims, err := DecodeToken(tokenString, configService.ServerConfig.JWTSecret)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			return
