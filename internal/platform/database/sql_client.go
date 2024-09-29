@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"github.com/tapiaw38/cardon-tour-be/internal/platform/config"
 	"log"
 	"os"
 	"path/filepath"
@@ -11,23 +12,13 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/lib/pq"
-	"github.com/tapiaw38/cardon-tour-be/internal/platform/config"
 )
 
 var sqlClient *sql.DB
 
-type SQLConfig struct {
-	DatabaseURL string
-}
-
-func NewSQLConfig(config config.Config) SQLConfig {
-	return SQLConfig{
-		DatabaseURL: config.DatabaseURL,
-	}
-}
-
-func (c *SQLConfig) initSQLClient() error {
-	newSQLClient, err := sql.Open("postgres", c.DatabaseURL)
+func initSQLClient() error {
+	cfg := config.GetConfigService()
+	newSQLClient, err := sql.Open("postgres", cfg.DBConfig.DatabaseURL)
 	if err != nil {
 		return err
 	}
@@ -40,9 +31,9 @@ func (c *SQLConfig) initSQLClient() error {
 	return nil
 }
 
-func (c *SQLConfig) GetSQLClientInstance() (*sql.DB, error) {
+func GetSQLClientInstance() (*sql.DB, error) {
 	if sqlClient == nil {
-		if err := c.initSQLClient(); err != nil {
+		if err := initSQLClient(); err != nil {
 			return nil, err
 		}
 	}
@@ -66,13 +57,14 @@ func getRelativePathToMigrationsDirectory() (string, error) {
 	return fmt.Sprintf("file://%s", relMigrationsDirPath), nil
 }
 
-func (c *SQLConfig) Makemigration() error {
+func Makemigration() error {
+	cfg := config.GetConfigService()
 	migrationPath, err := getRelativePathToMigrationsDirectory()
 	if err != nil {
 		return err
 	}
 
-	m, err := migrate.New(migrationPath, c.DatabaseURL)
+	m, err := migrate.New(migrationPath, cfg.DBConfig.DatabaseURL)
 	if err != nil {
 		return err
 	}
