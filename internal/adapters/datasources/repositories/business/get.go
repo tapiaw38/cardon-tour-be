@@ -46,7 +46,6 @@ func (r *repository) Get(ctx context.Context, businessID string) (domain.Busines
 			return domain.Business{}, err
 		}
 
-		// Inicializar el negocio solo una vez
 		if business.ID == "" {
 			business = domain.Business{
 				ID:             id,
@@ -66,7 +65,6 @@ func (r *repository) Get(ctx context.Context, businessID string) (domain.Busines
 			}
 		}
 
-		// Agregar imágenes si existen
 		if imageID != nil && imageURL != nil {
 			business.Images = append(business.Images, domain.BusinessImage{
 				ID:  *imageID,
