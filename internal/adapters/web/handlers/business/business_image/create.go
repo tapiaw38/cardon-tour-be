@@ -6,9 +6,6 @@ import (
 	businessimage "github.com/tapiaw38/cardon-tour-be/internal/usecases/business/bisiness_image"
 )
 
-type inputCreateImage struct {
-}
-
 func NewCreateHandler(usecase businessimage.CreateUsecase) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		businessID := c.Param("business_id")

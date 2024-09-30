@@ -14,12 +14,12 @@ func NewCreateHandler(usecase business.CreateUsecase) gin.HandlerFunc {
 			return
 		}
 
-		business, err := usecase.Execute(c, toBusinessInput(businessInput))
+		businessCreated, err := usecase.Execute(c.Request.Context(), toBusinessInput(businessInput))
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
-		c.JSON(http.StatusCreated, business)
+		c.JSON(http.StatusCreated, businessCreated)
 	}
 }
