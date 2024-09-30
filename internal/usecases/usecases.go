@@ -3,6 +3,7 @@ package usecases
 import (
 	"github.com/tapiaw38/cardon-tour-be/internal/platform/appcontext"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/business"
+	businessimage "github.com/tapiaw38/cardon-tour-be/internal/usecases/business/bisiness_image"
 	businesstype "github.com/tapiaw38/cardon-tour-be/internal/usecases/business/business_type"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/event"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/location"
@@ -51,15 +52,22 @@ type Site struct {
 }
 
 type Business struct {
-	GetUseCase  business.GetUsecase
-	ListUseCase business.ListUsecase
-	Types       BusinessType
+	CreateUseCase business.CreateUsecase
+	GetUseCase    business.GetUsecase
+	ListUseCase   business.ListUsecase
+	Types         BusinessType
+	Images        BusinessImage
 }
 
 type BusinessType struct {
 	ListUseCase      businesstype.ListUsecase
 	GetUseCase       businesstype.GetUsecase
 	GetBySlugUseCase businesstype.GetBySlugUsecase
+}
+
+type BusinessImage struct {
+	CreateUseCase businessimage.CreateUsecase
+	GetUseCase    businessimage.GetUsecase
 }
 
 type Event struct {
@@ -93,12 +101,17 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 			GetBySlugUseCase: site.NewGetBySlugUsecase(contextFactory),
 		},
 		Business: Business{
-			GetUseCase:  business.NewGetUseCase(contextFactory),
-			ListUseCase: business.NewListUseCase(contextFactory),
+			CreateUseCase: business.NewCreateUseCase(contextFactory),
+			GetUseCase:    business.NewGetUseCase(contextFactory),
+			ListUseCase:   business.NewListUseCase(contextFactory),
 			Types: BusinessType{
 				ListUseCase:      businesstype.NewListUseCase(contextFactory),
 				GetUseCase:       businesstype.NewGetUsecase(contextFactory),
 				GetBySlugUseCase: businesstype.NewGetBySlugUsecase(contextFactory),
+			},
+			Images: BusinessImage{
+				CreateUseCase: businessimage.NewCreateUseCase(contextFactory),
+				GetUseCase:    businessimage.NewGetUsecase(contextFactory),
 			},
 		},
 		Event: Event{

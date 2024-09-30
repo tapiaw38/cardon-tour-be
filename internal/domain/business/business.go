@@ -1,6 +1,7 @@
 package domain
 
 import (
+	image "github.com/tapiaw38/cardon-tour-be/internal/domain/image"
 	"time"
 
 	profile "github.com/tapiaw38/cardon-tour-be/internal/domain/profile"
@@ -38,7 +39,10 @@ type (
 	}
 
 	BusinessImage struct {
-		ID  string
-		URL string
+		ID         string
+		BusinessID string
+		URL        string
 	}
+
+	BusinessImageFile = image.ImageFile
 )

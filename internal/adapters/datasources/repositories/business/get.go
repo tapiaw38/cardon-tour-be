@@ -8,77 +8,109 @@ import (
 	domain "github.com/tapiaw38/cardon-tour-be/internal/domain/business"
 )
 
-func (r *repository) Get(ctx context.Context, id string) (domain.Business, error) {
-	row, err := r.executeGetQuery(ctx, id)
+func (r *repository) Get(ctx context.Context, businessID string) (domain.Business, error) {
+	rows, err := r.executeGetQuery(ctx, businessID)
 	if err != nil {
 		return domain.Business{}, err
 	}
+	defer rows.Close()
 
-	var businessID, profileID, businessTypeID, siteID, name string
-	var description, phoneNumber, email, address sql.NullString
-	var active bool
-	var latitude, longitude sql.NullFloat64
-	var createdAt time.Time
-	err = row.Scan(
-		&businessID,
-		&profileID,
-		&businessTypeID,
-		&siteID,
-		&name,
-		&description,
-		&address,
-		&phoneNumber,
-		&email,
-		&active,
-		&latitude,
-		&longitude,
-		&createdAt,
-	)
-	if err != nil {
+	var business domain.Business
+
+	for rows.Next() {
+		var id, profileID, businessTypeID, siteID, name string
+		var description, phoneNumber, email, address sql.NullString
+		var active bool
+		var latitude, longitude sql.NullFloat64
+		var createdAt time.Time
+		var imageID, imageURL *string
+
+		err = rows.Scan(
+			&id,
+			&profileID,
+			&businessTypeID,
+			&siteID,
+			&name,
+			&description,
+			&address,
+			&phoneNumber,
+			&email,
+			&active,
+			&latitude,
+			&longitude,
+			&createdAt,
+			&imageID,
+			&imageURL,
+		)
+		if err != nil {
+			return domain.Business{}, err
+		}
+
+		if business.ID == "" {
+			business = domain.Business{
+				ID:             id,
+				ProfileID:      profileID,
+				BusinessTypeID: businessTypeID,
+				SiteID:         siteID,
+				Name:           name,
+				Description:    description.String,
+				PhoneNumber:    phoneNumber.String,
+				Email:          email.String,
+				Address:        address.String,
+				Active:         active,
+				Latitude:       latitude.Float64,
+				Longitude:      longitude.Float64,
+				CreatedAt:      createdAt,
+				Images:         []domain.BusinessImage{},
+			}
+		}
+
+		if imageID != nil && imageURL != nil {
+			business.Images = append(business.Images, domain.BusinessImage{
+				ID:  *imageID,
+				URL: *imageURL,
+			})
+		}
+	}
+
+	if err = rows.Err(); err != nil {
 		return domain.Business{}, err
 	}
 
-	return domain.Business{
-		ID:             businessID,
-		ProfileID:      profileID,
-		BusinessTypeID: businessTypeID,
-		SiteID:         siteID,
-		Name:           name,
-		Description:    description.String,
-		PhoneNumber:    phoneNumber.String,
-		Email:          email.String,
-		Address:        address.String,
-		Active:         active,
-		Latitude:       latitude.Float64,
-		Longitude:      longitude.Float64,
-		CreatedAt:      createdAt,
-	}, nil
+	if business.ID == "" {
+		return domain.Business{}, sql.ErrNoRows
+	}
+
+	return business, nil
 }
 
-func (r *repository) executeGetQuery(ctx context.Context, id string) (*sql.Row, error) {
+func (r *repository) executeGetQuery(ctx context.Context, businessID string) (*sql.Rows, error) {
 	query := `SELECT 
-		id,
-		profile_id,
-		business_type_id,
-		site_id,
-		name,
-		description,
-		address,
-		phone_number,
-		email,
-		active,
-		latitude,
-		longitude,
-		created_at
+		bs.id,
+		bs.profile_id,
+		bs.business_type_id,
+		bs.site_id,
+		bs.name,
+		bs.description,
+		bs.address,
+		bs.phone_number,
+		bs.email,
+		bs.active,
+		bs.latitude,
+		bs.longitude,
+		bs.created_at,
+		bis.id,
+		bis.url
 	FROM
-		businesses
+		businesses bs
+	LEFT JOIN business_images bis ON bis.business_id = bs.id
 	WHERE
-		id = $1`
+		bs.id = $1`
 
-	row := r.db.QueryRowContext(ctx, query, id)
-	if row.Err() != nil {
-		return nil, row.Err()
+	rows, err := r.db.QueryContext(ctx, query, businessID)
+	if err != nil {
+		return nil, err
 	}
 
-	return row, nil
+	return rows, nil
 }
