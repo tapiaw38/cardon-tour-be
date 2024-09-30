@@ -3,6 +3,7 @@ package web
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/business"
+	businessimages "github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/business/business_image"
 	businesstype "github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/business/business_type"
 	"github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/event"
 	"github.com/tapiaw38/cardon-tour-be/internal/adapters/web/handlers/location"
@@ -43,8 +44,11 @@ func RegisterApplicationRoutes(app *gin.Engine, usecases *usecases.UseCases) {
 	routeGroup.GET("/sites/sites-by-id/:id", site.NewGetHandler(usecases.Site.GetUseCase))
 	routeGroup.GET("/sites/sites-by-slug/:slug", site.NewGetBySlugHandler(usecases.Site.GetBySlugUseCase))
 
+	routeGroup.POST("/businesses", business.NewCreateHandler(usecases.Business.CreateUseCase))
 	routeGroup.GET("/businesses/:id", business.NewGetHandler(usecases.Business.GetUseCase))
 	routeGroup.GET("/businesses", business.NewListHandler(usecases.Business.ListUseCase))
+
+	routeGroup.POST("/businesses/images/:business_id", businessimages.NewCreateHandler(usecases.Business.Images.CreateUseCase))
 
 	routeGroup.GET("/businesses/types", businesstype.NewListHandler(usecases.Business.Types.ListUseCase))
 	routeGroup.GET("/businesses/types-by-id/:id", businesstype.NewGetHandler(usecases.Business.Types.GetUseCase))
