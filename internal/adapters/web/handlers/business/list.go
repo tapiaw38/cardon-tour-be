@@ -12,13 +12,13 @@ func NewListHandler(usecase business.ListUsecase) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		filters := parseListFilterOptions(c.Request.URL.Query())
 
-		business, err := usecase.Execute(c.Request.Context(), filters)
+		businessList, err := usecase.Execute(c.Request.Context(), filters)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
-		c.JSON(http.StatusOK, business)
+		c.JSON(http.StatusOK, businessList)
 	}
 }
 
@@ -26,5 +26,6 @@ func parseListFilterOptions(query url.Values) business.ListFilterOptions {
 	return business.ListFilterOptions{
 		SiteSlug:         query.Get("site_slug"),
 		BusinessTypeSlug: query.Get("business_type_slug"),
+		Search:           query.Get("search"),
 	}
 }

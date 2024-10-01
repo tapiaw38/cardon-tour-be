@@ -16,13 +16,24 @@ func NewCreateHandler(usecase profile.CreateUsecase) gin.HandlerFunc {
 			return
 		}
 
-		claimUserID := c.MustGet("claims").(domain.Claims).UserId
-		if claimUserID == "" {
+		claims, exists := c.Get("claims")
+		if !exists {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "claims not found"})
+			return
+		}
+
+		claimData, ok := claims.(*domain.Claims)
+		if !ok {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid claims structure"})
+			return
+		}
+
+		if claimData.UserId == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
 			return
 		}
 
-		profileInput.UserID = claimUserID
+		profileInput.UserID = claimData.UserId
 
 		profile := toProfileInput(profileInput)
 

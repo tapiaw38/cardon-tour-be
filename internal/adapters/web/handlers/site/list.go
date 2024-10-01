@@ -24,5 +24,6 @@ func NewListHandler(usecase site.ListUsecase) gin.HandlerFunc {
 func parseListFilterOptions(queries url.Values) site.ListFilterOptions {
 	return site.ListFilterOptions{
 		ProvinceID: queries.Get("province_id"),
+		Search:     queries.Get("search"),
 	}
 }
