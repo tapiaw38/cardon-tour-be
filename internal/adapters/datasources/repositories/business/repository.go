@@ -8,11 +8,6 @@ import (
 )
 
 type (
-	ListFilterOptions struct {
-		SiteSlug         string
-		BusinessTypeSlug string
-	}
-
 	Repository interface {
 		Create(ctx context.Context, business domain.Business) (string, error)
 		Get(context.Context, string) (domain.Business, error)

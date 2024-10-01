@@ -3,9 +3,19 @@ package business
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"strings"
 	"time"
 
 	domain "github.com/tapiaw38/cardon-tour-be/internal/domain/business"
+)
+
+type (
+	ListFilterOptions struct {
+		SiteSlug         string
+		BusinessTypeSlug string
+		Search           string
+	}
 )
 
 func (r *repository) List(ctx context.Context, filter ListFilterOptions) ([]domain.Business, error) {
@@ -113,16 +123,25 @@ func (r *repository) executeListQuery(ctx context.Context, filter ListFilterOpti
 	LEFT JOIN business_images bis ON bis.business_id = bs.id`
 
 	query += " WHERE bs.id = bs.id"
+	argIndex := 1
 
 	var args []any
 
 	if filter.SiteSlug != "" {
-		query += " AND bs.site_id = (SELECT id FROM sites WHERE slug = $1)"
+		query += " AND bs.site_id = (SELECT id FROM sites WHERE slug = $" + fmt.Sprintf("%d", argIndex) + ")"
 		args = append(args, filter.SiteSlug)
+		argIndex++
 	}
 	if filter.BusinessTypeSlug != "" {
-		query += " AND bs.business_type_id = (SELECT id FROM business_types WHERE slug = $2)"
+		query += " AND bs.business_type_id = (SELECT id FROM business_types WHERE slug = $" + fmt.Sprintf("%d", argIndex) + ")"
 		args = append(args, filter.BusinessTypeSlug)
+		argIndex++
+	}
+	if filter.Search != "" {
+		query += " AND (LOWER(bs.name) ILIKE $" + fmt.Sprintf("%d", argIndex) + " OR LOWER(bs.description) ILIKE $" + fmt.Sprintf("%d", argIndex+1) + ")"
+		args = append(args, "%"+strings.ToLower(filter.Search)+"%")
+		args = append(args, "%"+strings.ToLower(filter.Search)+"%")
+		argIndex += 2
 	}
 
 	query += " ORDER BY bs.id DESC;"

@@ -3,6 +3,8 @@ package site
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"strings"
 
 	domain_city "github.com/tapiaw38/cardon-tour-be/internal/domain/location"
 	domain_site "github.com/tapiaw38/cardon-tour-be/internal/domain/site"
@@ -11,6 +13,7 @@ import (
 type (
 	ListFilterOptions struct {
 		ProvinceID string
+		Search     string
 	}
 )
 
@@ -105,13 +108,23 @@ func (r *repository) executeListQuery(ctx context.Context, filters ListFilterOpt
 		LEFT JOIN cities c ON c.id = s.city_id`
 
 	query += ` WHERE s.id = s.id`
+	argIndex := 1
 
 	var args []any
 
 	if filters.ProvinceID != "" {
-		query += ` AND c.province_id = $1`
+		query += ` AND c.province_id = $` + fmt.Sprintf("%d", argIndex)
 		args = append(args, filters.ProvinceID)
+		argIndex++
 	}
+	if filters.Search != "" {
+		query += " AND (LOWER(s.name) ILIKE $" + fmt.Sprintf("%d", argIndex) + " OR LOWER(s.description) ILIKE $" + fmt.Sprintf("%d", argIndex+1) + ")"
+		args = append(args, "%"+strings.ToLower(filters.Search)+"%")
+		args = append(args, "%"+strings.ToLower(filters.Search)+"%")
+		argIndex += 2
+	}
+
+	query += " ORDER BY s.name DESC;"
 
 	rows, err := r.db.QueryContext(ctx, query, args...)
 	if err != nil {

@@ -26,5 +26,6 @@ func parseListFilterOptions(query url.Values) business.ListFilterOptions {
 	return business.ListFilterOptions{
 		SiteSlug:         query.Get("site_slug"),
 		BusinessTypeSlug: query.Get("business_type_slug"),
+		Search:           query.Get("search"),
 	}
 }
