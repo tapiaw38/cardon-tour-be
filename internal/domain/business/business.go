@@ -31,6 +31,7 @@ type (
 		Email          string
 		Address        string
 		Description    string
+		Content        string
 		Latitude       float64
 		Longitude      float64
 		Active         bool

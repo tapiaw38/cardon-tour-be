@@ -32,16 +32,17 @@ func (r *repository) executeCreateQuery(ctx context.Context, business domain.Bus
                         name, 
                         phone_number, 
                         email, 
-                        description, 
+                        description,
+                        content,
                         address, 
                         active, 
                         latitude, 
                         longitude, 
                         created_at) 
-			VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+			VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
             RETURNING id`
 
-	var name, phoneNumber, email, description, address, createdAt *string
+	var name, phoneNumber, email, description, content, address, createdAt *string
 	var latitude, longitude *float64
 
 	if business.Name != "" {
@@ -55,6 +56,9 @@ func (r *repository) executeCreateQuery(ctx context.Context, business domain.Bus
 	}
 	if business.Description != "" {
 		description = utils.ToPointer(business.Description)
+	}
+	if business.Content != "" {
+		content = utils.ToPointer(business.Content)
 	}
 	if business.Address != "" {
 		address = utils.ToPointer(business.Address)
@@ -81,6 +85,7 @@ func (r *repository) executeCreateQuery(ctx context.Context, business domain.Bus
 		phoneNumber,
 		email,
 		description,
+		content,
 		address,
 		business.Active,
 		latitude,

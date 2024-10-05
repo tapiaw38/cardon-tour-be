@@ -14,6 +14,7 @@ type (
 	ListFilterOptions struct {
 		ProvinceID string
 		Search     string
+		IsPromoted *bool
 	}
 )
 
@@ -29,6 +30,7 @@ func (r *repository) List(ctx context.Context, filters ListFilterOptions) ([]dom
 	for rows.Next() {
 		var id, siteSlug, name, description, cityID string
 		var imageURL sql.NullString
+		var isPromoted bool
 
 		var cityName, citySlug, cityProvinceID sql.NullString
 		var cityLatitude, cityLongitude sql.NullFloat64
@@ -41,6 +43,7 @@ func (r *repository) List(ctx context.Context, filters ListFilterOptions) ([]dom
 			&name,
 			&description,
 			&imageURL,
+			&isPromoted,
 			&cityID,
 			&cityName,
 			&citySlug,
@@ -63,6 +66,7 @@ func (r *repository) List(ctx context.Context, filters ListFilterOptions) ([]dom
 				Name:        name,
 				Description: description,
 				ImageURL:    imageURL.String,
+				IsPromoted:  isPromoted,
 				CityID:      cityID,
 				City: &domain_city.City{
 					Name:       cityName.String,
@@ -95,6 +99,7 @@ func (r *repository) executeListQuery(ctx context.Context, filters ListFilterOpt
 			s.name,
 			s.description,
 			s.image_url,
+			s.is_promoted,
 			s.city_id,
 			c.name AS city_name,
 			c.slug AS city_slug,
@@ -115,6 +120,11 @@ func (r *repository) executeListQuery(ctx context.Context, filters ListFilterOpt
 	if filters.ProvinceID != "" {
 		query += ` AND c.province_id = $` + fmt.Sprintf("%d", argIndex)
 		args = append(args, filters.ProvinceID)
+		argIndex++
+	}
+	if filters.IsPromoted != nil {
+		query += ` AND s.is_promoted = $` + fmt.Sprintf("%d", argIndex)
+		args = append(args, *filters.IsPromoted)
 		argIndex++
 	}
 	if filters.Search != "" {

@@ -1,6 +1,7 @@
 package site
 
 import (
+	web_utils "github.com/tapiaw38/cardon-tour-be/internal/platform/web"
 	"net/http"
 	"net/url"
 
@@ -25,5 +26,6 @@ func parseListFilterOptions(queries url.Values) site.ListFilterOptions {
 	return site.ListFilterOptions{
 		ProvinceID: queries.Get("province_id"),
 		Search:     queries.Get("search"),
+		IsPromoted: web_utils.ParseBoolPointerQueryValue(queries.Get("is_promoted")),
 	}
 }
