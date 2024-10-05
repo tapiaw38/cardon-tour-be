@@ -16,6 +16,7 @@ func (r *repository) GetBySlug(ctx context.Context, slug string) (*domain_site.S
 
 	var id, siteSlug, name, description, cityID string
 	var imageURL sql.NullString
+	var isPromoted bool
 
 	var cityName, citySlug, cityProvinceID sql.NullString
 	var cityLatitude, cityLongitude sql.NullFloat64
@@ -29,6 +30,7 @@ func (r *repository) GetBySlug(ctx context.Context, slug string) (*domain_site.S
 			&name,
 			&description,
 			&imageURL,
+			&isPromoted,
 			&cityID,
 			&cityName,
 			&citySlug,
@@ -55,6 +57,7 @@ func (r *repository) GetBySlug(ctx context.Context, slug string) (*domain_site.S
 		Name:        name,
 		Description: description,
 		ImageURL:    imageURL.String,
+		IsPromoted:  isPromoted,
 		CityID:      cityID,
 		City: &domain_city.City{
 			Name:       cityName.String,
@@ -74,6 +77,7 @@ func (r *repository) executeGetBySlugQuery(ctx context.Context, slug string) (*s
 			s.name,
 			s.description,
 			s.image_url,
+			s.is_promoted,
 			s.city_id,
 			c.name AS city_name,
 			c.slug AS city_slug,

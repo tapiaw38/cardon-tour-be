@@ -14,6 +14,7 @@ type (
 		SiteID         string                    `json:"site_id"`
 		Name           string                    `json:"name"`
 		Description    string                    `json:"description"`
+		Content        string                    `json:"content,omitempty"`
 		PhoneNumber    string                    `json:"phone_number"`
 		Email          string                    `json:"email"`
 		Address        string                    `json:"address"`
@@ -38,6 +39,7 @@ func toBusinessOutputData(business *domain.Business) BusinessOutputData {
 		SiteID:         business.SiteID,
 		Name:           business.Name,
 		Description:    business.Description,
+		Content:        business.Content,
 		PhoneNumber:    business.PhoneNumber,
 		Email:          business.Email,
 		Address:        business.Address,

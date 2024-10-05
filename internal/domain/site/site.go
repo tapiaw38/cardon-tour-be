@@ -9,6 +9,7 @@ type (
 		Name           string
 		Description    string
 		ImageURL       string
+		IsPromoted     bool
 		CityID         string
 		City           *domain.City
 		BusinessTypeID []string

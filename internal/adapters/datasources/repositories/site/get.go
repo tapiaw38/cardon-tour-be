@@ -16,6 +16,7 @@ func (r *repository) Get(ctx context.Context, id string) (*domain_site.Site, err
 
 	var siteID, siteSlug, name, description, cityID string
 	var imageURL sql.NullString
+	var isPromoted bool
 
 	var cityName, citySlug, cityProvinceID sql.NullString
 	var cityLatitude, cityLongitude sql.NullFloat64
@@ -29,6 +30,7 @@ func (r *repository) Get(ctx context.Context, id string) (*domain_site.Site, err
 			&name,
 			&description,
 			&imageURL,
+			&isPromoted,
 			&cityID,
 			&cityName,
 			&citySlug,
@@ -56,6 +58,7 @@ func (r *repository) Get(ctx context.Context, id string) (*domain_site.Site, err
 		Description: description,
 		ImageURL:    imageURL.String,
 		CityID:      cityID,
+		IsPromoted:  isPromoted,
 		City: &domain_city.City{
 			Name:       cityName.String,
 			Slug:       citySlug.String,
@@ -73,6 +76,7 @@ func (r *repository) executeGetQuery(ctx context.Context, id string) (*sql.Rows,
 			s.name,
 			s.description,
 			s.image_url,
+			s.is_promoted,
 			s.city_id,
 			c.name AS city_name,
 			c.slug AS city_slug,

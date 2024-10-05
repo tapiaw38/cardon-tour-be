@@ -55,6 +55,7 @@ CREATE TABLE sites (
     description TEXT,
     image_url VARCHAR(255),
     city_id VARCHAR(36) NOT NULL,
+    is_promoted BOOL NOT NULL DEFAULT false,
     CONSTRAINT fk_site_city FOREIGN KEY (city_id) REFERENCES cities(id),
     CONSTRAINT unique_site UNIQUE (slug, city_id)
 );
@@ -92,6 +93,7 @@ CREATE TABLE businesses (
     phone_number VARCHAR(255),
     email VARCHAR(255),
     description TEXT,
+    content VARCHAR(20000),
     address VARCHAR(255),
     active BOOLEAN NOT NULL DEFAULT true,
     latitude DECIMAL(10, 8),
