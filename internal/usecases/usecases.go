@@ -46,6 +46,7 @@ type Location struct {
 }
 
 type Site struct {
+	CreateUseCase    site.CreateUsecase
 	ListUseCase      site.ListUsecase
 	GetUseCase       site.GetUsecase
 	GetBySlugUseCase site.GetBySlugUsecase
@@ -60,6 +61,7 @@ type Business struct {
 }
 
 type BusinessType struct {
+	CreateUseCase    businesstype.CreateUsecase
 	ListUseCase      businesstype.ListUsecase
 	GetUseCase       businesstype.GetUsecase
 	GetBySlugUseCase businesstype.GetBySlugUsecase
@@ -96,6 +98,7 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 			ListProvinceUseCase:      location.NewListProvinceUseCase(contextFactory),
 		},
 		Site: Site{
+			CreateUseCase:    site.NewCreateUsecase(contextFactory),
 			ListUseCase:      site.NewListUseCase(contextFactory),
 			GetUseCase:       site.NewGetUsecase(contextFactory),
 			GetBySlugUseCase: site.NewGetBySlugUsecase(contextFactory),
@@ -105,6 +108,7 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 			GetUseCase:    business.NewGetUseCase(contextFactory),
 			ListUseCase:   business.NewListUseCase(contextFactory),
 			Types: BusinessType{
+				CreateUseCase:    businesstype.NewCreateUsecase(contextFactory),
 				ListUseCase:      businesstype.NewListUseCase(contextFactory),
 				GetUseCase:       businesstype.NewGetUsecase(contextFactory),
 				GetBySlugUseCase: businesstype.NewGetBySlugUsecase(contextFactory),

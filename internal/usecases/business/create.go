@@ -36,7 +36,6 @@ func (u *createUsecase) Execute(ctx context.Context, businessInput domain.Busine
 	}
 
 	businessInput.ID = businessID.String()
-
 	id, err := app.Repositories.Business.Create(ctx, businessInput)
 	if err != nil {
 		return nil, err

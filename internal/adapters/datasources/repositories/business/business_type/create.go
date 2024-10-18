@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	domain "github.com/tapiaw38/cardon-tour-be/internal/domain/business"
+	"github.com/tapiaw38/cardon-tour-be/internal/platform/utils"
 )
 
 func (r *repository) Create(ctx context.Context, businessType domain.BusinessType) (string, error) {
@@ -21,15 +22,30 @@ func (r *repository) Create(ctx context.Context, businessType domain.BusinessTyp
 func (r *repository) executeCreateQuery(ctx context.Context, businessType domain.BusinessType) (*sql.Row, error) {
 	query := `INSERT INTO business_types(
 					id, slug, name, color, description, image_url
-				) VALUES ($1, $2, $3, $4, $5) RETURNING id`
+				) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`
+
+	var name, color, description, imageURL *string
+
+	if businessType.Name != "" {
+		name = utils.ToPointer(businessType.Name)
+	}
+	if businessType.Color != "" {
+		color = utils.ToPointer(businessType.Color)
+	}
+	if businessType.Description != "" {
+		description = utils.ToPointer(businessType.Description)
+	}
+	if businessType.ImageURL != "" {
+		imageURL = utils.ToPointer(businessType.ImageURL)
+	}
 
 	args := []any{
 		businessType.ID,
 		businessType.Slug,
-		businessType.Name,
-		businessType.Color,
-		businessType.Description,
-		businessType.ImageURL,
+		name,
+		color,
+		description,
+		imageURL,
 	}
 
 	row := r.db.QueryRowContext(ctx, query, args...)

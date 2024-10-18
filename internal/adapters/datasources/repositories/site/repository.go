@@ -9,6 +9,7 @@ import (
 
 type (
 	Repository interface {
+		Create(context.Context, domain.Site) (string, error)
 		List(context.Context, ListFilterOptions) ([]domain.Site, error)
 		Get(context.Context, string) (*domain.Site, error)
 		GetBySlug(context.Context, string) (*domain.Site, error)
