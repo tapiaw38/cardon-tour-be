@@ -6,11 +6,14 @@ import (
 	businessimage "github.com/tapiaw38/cardon-tour-be/internal/usecases/business/bisiness_image"
 	businesstype "github.com/tapiaw38/cardon-tour-be/internal/usecases/business/business_type"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/event"
+	eventschedule "github.com/tapiaw38/cardon-tour-be/internal/usecases/event/event_schedule"
+	eventtype "github.com/tapiaw38/cardon-tour-be/internal/usecases/event/event_type"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/location"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/profile"
 	profilesite "github.com/tapiaw38/cardon-tour-be/internal/usecases/profile/profile_site"
 	profiletype "github.com/tapiaw38/cardon-tour-be/internal/usecases/profile/profile_type"
 	"github.com/tapiaw38/cardon-tour-be/internal/usecases/site"
+	sitebusinesstype "github.com/tapiaw38/cardon-tour-be/internal/usecases/site/business_type"
 )
 
 type UseCases struct {
@@ -50,6 +53,12 @@ type Site struct {
 	ListUseCase      site.ListUsecase
 	GetUseCase       site.GetUsecase
 	GetBySlugUseCase site.GetBySlugUsecase
+	BusinessType     SiteBusinessType
+}
+
+type SiteBusinessType struct {
+	CreateUseCase sitebusinesstype.CreateUsecase
+	DeleteUseCase sitebusinesstype.DeleteUsecase
 }
 
 type Business struct {
@@ -75,6 +84,20 @@ type BusinessImage struct {
 type Event struct {
 	GetUseCase  event.GetUsecase
 	ListUseCase event.ListUsecase
+	Types       EventType
+	Schedule    EventSchedule
+}
+
+type EventType struct {
+	CreateUseCase eventtype.CreateUsecase
+	ListUseCase   eventtype.ListUsecase
+	GetUseCase    eventtype.GetUsecase
+}
+
+type EventSchedule struct {
+	CreateUseCase eventschedule.CreateUsecase
+	GetUseCase    eventschedule.GetUsecase
+	ListUseCase   eventschedule.ListUsecase
 }
 
 func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
@@ -102,6 +125,10 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 			ListUseCase:      site.NewListUseCase(contextFactory),
 			GetUseCase:       site.NewGetUsecase(contextFactory),
 			GetBySlugUseCase: site.NewGetBySlugUsecase(contextFactory),
+			BusinessType: SiteBusinessType{
+				CreateUseCase: sitebusinesstype.NewCreateUsecase(contextFactory),
+				DeleteUseCase: sitebusinesstype.NewDeleteUsecase(contextFactory),
+			},
 		},
 		Business: Business{
 			CreateUseCase: business.NewCreateUseCase(contextFactory),
@@ -121,6 +148,16 @@ func CreateUsecases(contextFactory appcontext.Factory) *UseCases {
 		Event: Event{
 			GetUseCase:  event.NewGetUseCase(contextFactory),
 			ListUseCase: event.NewListUseCase(contextFactory),
+			Types: EventType{
+				CreateUseCase: eventtype.NewCreateUsecase(contextFactory),
+				ListUseCase:   eventtype.NewListUsecase(contextFactory),
+				GetUseCase:    eventtype.NewGetUsecase(contextFactory),
+			},
+			Schedule: EventSchedule{
+				CreateUseCase: eventschedule.NewCreateUsecase(contextFactory),
+				GetUseCase:    eventschedule.NewGetUsecase(contextFactory),
+				ListUseCase:   eventschedule.NewListUsecase(contextFactory),
+			},
 		},
 	}
 }

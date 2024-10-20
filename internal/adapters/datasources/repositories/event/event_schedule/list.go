@@ -6,8 +6,8 @@ import (
 	domain "github.com/tapiaw38/cardon-tour-be/internal/domain/event"
 )
 
-func (r *repository) List(ctx context.Context, eventID string) ([]domain.EventSchedule, error) {
-	rows, err := r.executeListQuery(ctx, eventID)
+func (r *repository) List(ctx context.Context) ([]domain.EventSchedule, error) {
+	rows, err := r.executeListQuery(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +32,7 @@ func (r *repository) List(ctx context.Context, eventID string) ([]domain.EventSc
 	return schedules, nil
 }
 
-func (r *repository) executeListQuery(ctx context.Context, eventID string) (*sql.Rows, error) {
+func (r *repository) executeListQuery(ctx context.Context) (*sql.Rows, error) {
 	query := `
 		SELECT
 			id,

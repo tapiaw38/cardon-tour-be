@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Wait for PostgreSQL to be ready
-until pg_isready --host=cardon-postgres-db --port=5432 --username=postgres --dbname=cardon-tour-db
+until pg_isready --host=cardon-postgres-db --port=54321 --username=postgres --dbname=cardon-tour-db
 do
   echo "Waiting for PostgreSQL to be ready..."
   sleep 2

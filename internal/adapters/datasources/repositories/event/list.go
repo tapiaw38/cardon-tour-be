@@ -38,7 +38,7 @@ func (r *repository) List(ctx context.Context, filter ListFilterOptions) ([]*eve
 		var siteID, siteSlug, siteName sql.NullString
 		var scheduleID string
 		var scheduleStartAt, scheduleEndAt time.Time
-		var scheduleActive bool
+		var scheduleActive *bool
 
 		err := rows.Scan(
 			&id,

@@ -10,7 +10,7 @@ type (
 	Repository interface {
 		Create(context.Context, domain.EventSchedule) (string, error)
 		Get(context.Context, string) (*domain.EventSchedule, error)
-		List(context.Context, string) ([]domain.EventSchedule, error)
+		List(context.Context) ([]domain.EventSchedule, error)
 		Update(context.Context, domain.EventSchedule) (string, error)
 	}
 

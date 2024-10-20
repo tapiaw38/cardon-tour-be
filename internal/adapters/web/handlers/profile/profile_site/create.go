@@ -9,13 +9,15 @@ import (
 
 func NewCreateHandler(usecase profilesite.CreateUsecase) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var profileSiteInput inputProfileSite
-		if err := c.ShouldBindJSON(&profileSiteInput); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		profileID := c.Param("profile_id")
+		siteID := c.Param("site_id")
+
+		if profileID == "" || siteID == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "profile_id and site_id are required"})
 			return
 		}
 
-		profileSite, err := usecase.Execute(c.Request.Context(), profileSiteInput.ProfileID, profileSiteInput.SiteID)
+		profileSite, err := usecase.Execute(c.Request.Context(), profileID, siteID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
