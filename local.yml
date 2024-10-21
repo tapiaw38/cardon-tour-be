@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 
 # Define services
 services:
@@ -32,7 +32,7 @@ services:
     networks:
       - network-api
     env_file:
-      - .env.local
+      - .env
 # Define volumes
 volumes:
   database_postgres:
