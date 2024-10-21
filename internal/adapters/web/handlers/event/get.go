@@ -9,12 +9,12 @@ import (
 func NewGetHandler(usecase event.GetUsecase) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Param("id")
-		event, err := usecase.Execute(c.Request.Context(), id)
+		eventCreated, err := usecase.Execute(c.Request.Context(), id)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
-		c.JSON(http.StatusOK, event)
+		c.JSON(http.StatusOK, eventCreated)
 	}
 }

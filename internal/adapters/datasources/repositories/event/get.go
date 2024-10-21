@@ -23,7 +23,7 @@ func (r *repository) Get(ctx context.Context, eventID string) (*event_domain.Eve
 		var description sql.NullString
 		var createdAt time.Time
 		var scheduleStartAt, scheduleEndAt time.Time
-		var scheduleActive bool
+		var scheduleActive *bool
 
 		err := rows.Scan(
 			&id,

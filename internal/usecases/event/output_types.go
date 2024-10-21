@@ -24,7 +24,7 @@ type (
 
 	EventScheduleOutputData struct {
 		ID        string `json:"id"`
-		Active    bool   `json:"active"`
+		Active    *bool  `json:"active"`
 		StartAt   string `json:"start_at"`
 		EndAt     string `json:"end_at"`
 		CreatedAt string `json:"created_at"`

@@ -8,6 +8,8 @@ import (
 
 type (
 	Repository interface {
+		Create(ctx context.Context, eventType domain.EventType) (string, error)
+		Get(ctx context.Context, eventTypeID string) (domain.EventType, error)
 		List(ctx context.Context) ([]domain.EventType, error)
 	}
 

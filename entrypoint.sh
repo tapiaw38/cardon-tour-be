@@ -9,4 +9,4 @@ done
 
 # PostgreSQL is now ready, to run the Go application
 echo "========== Starting Go application =========="
-exec go run cmd/api/main.go --host 0.0.0.0
+exec go run ./cmd/api/ --host 0.0.0.0

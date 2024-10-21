@@ -26,12 +26,12 @@ func (r *repository) executeCreateQuery(ctx context.Context, schedule domain.Eve
 		INSERT INTO event_schedules (
 			id,
 			event_id, 
-			active, 
+			active,
 		    start_at, 
 		    end_at, 
 			created_at
 		)
-		VALUES ($1, $2, $3, $4, $5, $6)
+		VALUES ($1, $2,COALESCE($3, active), $4, $5, $6)
 		RETURNING id
 	`
 	args := []any{
