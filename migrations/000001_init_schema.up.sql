@@ -32,7 +32,7 @@ CREATE TABLE provinces (
     longitude DECIMAL(11, 8),
     description TEXT,
     CONSTRAINT fk_country FOREIGN KEY (country_id) REFERENCES countries(id),
-    CONSTRAINT unique_province UNIQUE (country_id, code)
+    CONSTRAINT unique_province UNIQUE (country_id, slug)
 );
 
 CREATE TABLE cities (
@@ -45,7 +45,7 @@ CREATE TABLE cities (
     longitude DECIMAL(11, 8),
     description TEXT,
     CONSTRAINT fk_province FOREIGN KEY (province_id) REFERENCES provinces(id),
-    CONSTRAINT unique_city UNIQUE (province_id, code)
+    CONSTRAINT unique_city UNIQUE (province_id, slug)
 );
 
 CREATE TABLE sites (
