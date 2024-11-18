@@ -12,9 +12,17 @@ install-deps: welcome ## Install dependencies for running the project
 	@go install github.com/air-verse/air@latest
 	@echo "Air installation completed"
 
-install-migrate: welcome ## Install the migrate CLI tool
+apt-install-migrate: welcome ## Install the migrate CLI tool
 	@echo "Installing migrate CLI..."
 	@sudo apt install --no-install-recommends -y postgresql-client curl && \
+    curl -L -o /tmp/migrate.tar.gz https://github.com/golang-migrate/migrate/releases/download/v4.15.0/migrate.linux-amd64.tar.gz && \
+    sudo tar xzf /tmp/migrate.tar.gz -C /usr/local/bin && \
+    sudo chmod +x /usr/local/bin/migrate
+	@echo "migrate installation completed"
+
+pacman-install-migrate: welcome ## Install the migrate CLI tool
+	@echo "Installing migrate CLI..."
+	@sudo pacman -S --noconfirm postgresql curl && \
     curl -L -o /tmp/migrate.tar.gz https://github.com/golang-migrate/migrate/releases/download/v4.15.0/migrate.linux-amd64.tar.gz && \
     sudo tar xzf /tmp/migrate.tar.gz -C /usr/local/bin && \
     sudo chmod +x /usr/local/bin/migrate
@@ -57,10 +65,10 @@ migrate-create: ## Create a new migration
 	migrate create -dir migrations -ext sql $$name
 
 migrate-up: welcome ## Apply all available migrations
-	@migrate -path migrations -database 'postgres://postgres:postgres@localhost:5432/cardon-tour-db?sslmode=disable' up
+	@migrate -path migrations -database 'postgres://postgres:postgres@localhost:54321/cardon-tour-db?sslmode=disable' up
 
 migrate-down: welcome ## Revert the last migration
-	@migrate -path migrations -database 'postgres://postgres:postgres@localhost:5432/cardon-tour-db?sslmode=disable' down
+	@migrate -path migrations -database 'postgres://postgres:postgres@localhost:54321/cardon-tour-db?sslmode=disable' down
 
 help: welcome
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | grep ^help -v | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
