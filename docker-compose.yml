@@ -1,6 +1,3 @@
-version: "3.8"
-
-# Define services
 services:
   cardon-postgres-db:
     container_name: "cardon-postgres-db"
