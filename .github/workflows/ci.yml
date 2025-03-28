@@ -32,7 +32,7 @@ jobs:
       - name: Execute tests
         run: go test -v ./...
 
-      - name: Init Config
+      - name: Init Docker Config
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build and Push Docker Image
@@ -40,6 +40,6 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/cardon-tour-be:latest .
           docker push ${{ secrets.DOCKER_USERNAME }}/cardon-tour-be:latest
 
-#      - name: Notify Jenkins
-#        run: |
-#          curl -X POST "http://JENKINS_URL/job/go-app-pipeline/buildWithParameters?token=${{ secrets.JENKINS_API_TOKEN }}"
+      - name: Notify Jenkins
+        run: |
+          curl -X POST "http://18.228.219.191:8080/job/cardon-tour-be-pipeline/buildWithParameters?token=${{ secrets.JENKINS_API_TOKEN }}"
