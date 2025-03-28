@@ -48,7 +48,6 @@ func RegisterApplicationRoutes(app *gin.Engine, usecases *usecases.UseCases) {
 	routeGroup.GET("/events/schedules", eventschedule.NewListHandler(usecases.Event.Schedule.ListUseCase))
 	routeGroup.GET("/events/schedules/:id", eventschedule.NewGetHandler(usecases.Event.Schedule.GetUseCase))
 
-	// protected routes
 	routeGroup.Use(middlewares.CheckAuthMiddleware())
 	routeGroup.POST("/profiles", profile.NewCreateHandler(usecases.Profile.CreateUseCase))
 	routeGroup.GET("/profiles/me", profile.NewGetByUserIDHandler(usecases.Profile.GetByUserIDUseCase))

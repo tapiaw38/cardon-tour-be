@@ -9,7 +9,7 @@
       "type": "go",
       "request": "launch",
       "mode": "debug",
-      "program": "./cmd/api/main.go"
+      "program": "./cmd/api"
     },
     {
       "name": "Attach to Process",
