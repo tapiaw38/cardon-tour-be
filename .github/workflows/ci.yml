@@ -1,0 +1,37 @@
+name: CI - Build & Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.22
+
+      - name: Install dependencies
+        run: go mod tidy
+
+      - name: Execute tests
+        run: go test -v ./...
+
+      - name: Init Config
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/cardon-tour-be:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/cardon-tour-be:latest
+
+#      - name: Notify Jenkins
+#        run: |
+#          curl -X POST "http://JENKINS_URL/job/go-app-pipeline/buildWithParameters?token=${{ secrets.JENKINS_API_TOKEN }}"
