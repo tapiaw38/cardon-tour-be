@@ -43,7 +43,7 @@ jobs:
       - name: Notify Jenkins
         run: |
           # Obtener el crumb de Jenkins
-          CRUMB=$(curl -u user:${{ secrets.JENKINS_API_TOKEN }} "http://18.228.219.191:8080/crumbIssuer/api/json" | jq -r '.crumb')
+          CRUMB=$(curl -u user:${{ secrets.JENKINS_API_USER }} "http://18.228.219.191:8080/crumbIssuer/api/json" | jq -r '.crumb')
 
           # Hacer la notificación a Jenkins con el crumb
           curl -X POST "http://18.228.219.191:8080/job/cardon-tour-be-pipeline/buildWithParameters?token=${{ secrets.JENKINS_API_TOKEN }}" \
