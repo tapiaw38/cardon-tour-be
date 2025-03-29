@@ -9,9 +9,9 @@ on:
     branches:
       - main
       - develop
-  workflow_dispatch:
+  workflow_dispatch: # Permite ejecutar manualmente el flujo de trabajo desde GitHub UI
   schedule:
-    - cron: "0 0 * * *" # Every day at midnight
+    - cron: "0 0 * * *" # Ejecutar todos los días a medianoche (UTC)
 
 jobs:
   build-and-push:
@@ -42,4 +42,9 @@ jobs:
 
       - name: Notify Jenkins
         run: |
-          curl -X POST "http://18.228.219.191:8080/job/cardon-tour-be-pipeline/buildWithParameters?token=${{ secrets.JENKINS_API_TOKEN }}"
+          # Obtener el crumb de Jenkins
+          CRUMB=$(curl -u user:${{ secrets.JENKINS_API_USER }} "http://18.228.219.191:8080/crumbIssuer/api/json" | jq -r '.crumb')
+
+          # Hacer la notificación a Jenkins con el crumb
+          curl -X POST "http://18.228.219.191:8080/job/cardon-tour-be-pipeline/buildWithParameters?token=${{ secrets.JENKINS_API_TOKEN }}" \
+          -H "Jenkins-Crumb: $CRUMB"
